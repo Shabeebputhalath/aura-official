@@ -1,100 +1,99 @@
-import { ArrowUpRight, Play, Sparkles } from 'lucide-react';
+import { ArrowRight, Play } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center overflow-hidden">
-      {/* Background image */}
+    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+
+      {/* ── Background video ──────────────────────────────────────── */}
       <div className="absolute inset-0">
-        <img
-          src="https://images.pexels.com/photos/35161171/pexels-photo-35161171.jpeg?auto=compress&cs=tinysrgb&w=1920"
-          alt=""
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
           className="h-full w-full object-cover"
-          style={{ transform: 'scale(1.05)' }}
-        />
-        {/* Cinematic gradient overlays */}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink-950/70 via-ink-950/50 to-ink-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/80 via-transparent to-ink-950/40" />
-        <div className="absolute inset-0 bg-grid opacity-40" />
+          style={{ filter: 'brightness(0.72) saturate(1.15)' }}
+        >
+          <source src="/Wildflowers_swaying_in_breeze_20261009072722.mp4" type="video/mp4" />
+        </video>
+
+        {/* Soft vignette — lighter so the video stays vibrant */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 to-black/35" />
+        {/* Subtle purple/accent tint to tie into brand colour */}
+        <div className="absolute inset-0 bg-accent-900/10 mix-blend-multiply" />
+        {/* Bottom fade — only the last strip fades to site bg, grass stays visible */}
+        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-ink-950/90 via-ink-950/30 to-transparent" />
       </div>
 
-      {/* Floating light orbs */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-[10%] top-[30%] h-96 w-96 rounded-full bg-accent-600/20 blur-[120px] animate-pulse-slow" />
-        <div className="absolute right-[15%] top-[50%] h-80 w-80 rounded-full bg-accent-500/10 blur-[100px] animate-pulse-slow" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-[10%] left-[40%] h-72 w-72 rounded-full bg-gold/10 blur-[100px] animate-pulse-slow" style={{ animationDelay: '4s' }} />
-      </div>
+      {/* ── Centered content ──────────────────────────────────────── */}
+      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-20 pt-36 text-center">
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 pt-32 pb-20 lg:px-10">
-        <div className="max-w-4xl">
-          {/* Badge */}
-          <div
-            className="mb-8 inline-flex items-center gap-2.5 rounded-full border border-white/10 bg-white/[0.03] px-4 py-2 backdrop-blur-md animate-fade-down"
-            style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}
+        {/* Badge pill — "We just raised 20M 🚀" style */}
+        <div
+          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md animate-fade-down"
+          style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}
+        >
+          <span className="text-sm font-medium text-white/90 tracking-wide">
+            AI Video Production Studio&nbsp;✦
+          </span>
+        </div>
+
+        {/* Headline — two lines, light + bold mix */}
+        <h1
+          className="animate-fade-up font-display leading-[1.08] tracking-tight text-white"
+          style={{
+            animationDelay: '0.2s',
+            opacity: 0,
+            animationFillMode: 'forwards',
+            fontSize: 'clamp(2.8rem, 8vw, 6rem)',
+          }}
+        >
+          <span className="font-light">Create with </span><span className="font-bold">AI.</span>
+          <br />
+          <span className="font-bold">Cinematically.</span>
+        </h1>
+
+        {/* Sub-copy — two-line centred, lighter weight */}
+        <p
+          className="mt-6 max-w-xl text-base font-normal leading-relaxed text-white/75 sm:text-lg animate-fade-up"
+          style={{ animationDelay: '0.38s', opacity: 0, animationFillMode: 'forwards' }}
+        >
+          From concept to final frame, we craft cinematic AI videos that make
+          <br className="hidden sm:block" />
+          brands impossible to ignore.
+        </p>
+
+        {/* CTA row — filled pill + ghost text */}
+        <div
+          className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-fade-up"
+          style={{ animationDelay: '0.52s', opacity: 0, animationFillMode: 'forwards' }}
+        >
+          {/* Filled pill */}
+          <a
+            href="#contact"
+            className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-ink-950 shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-xl hover:shadow-black/25"
           >
-            <Sparkles className="h-3.5 w-3.5 text-accent-400" />
-            <span className="text-xs font-medium uppercase tracking-[0.2em] text-ink-200">
-              AI Video Production Studio
+            Get Started
+            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+          </a>
+
+          {/* Ghost / text CTA */}
+          <button className="inline-flex items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10">
+            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+              <Play className="h-3 w-3 translate-x-px fill-white text-white" />
             </span>
-          </div>
-
-          {/* Headline */}
-          <h1
-            className="font-display text-5xl font-bold leading-[1.05] tracking-tight text-white sm:text-6xl lg:text-7xl xl:text-8xl animate-fade-up"
-            style={{ animationDelay: '0.2s', opacity: 0, animationFillMode: 'forwards' }}
-          >
-            AI-Powered Films.
-            <br />
-            <span className="text-gradient-accent">Human-Level Creativity.</span>
-          </h1>
-
-          {/* Supporting text */}
-          <p
-            className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-200 sm:text-xl animate-fade-up"
-            style={{ animationDelay: '0.4s', opacity: 0, animationFillMode: 'forwards' }}
-          >
-            From concept to final frame, we create cinematic AI videos that make
-            brands impossible to ignore.
-          </p>
-
-          {/* CTAs */}
-          <div
-            className="mt-10 flex flex-col gap-4 sm:flex-row sm:items-center animate-fade-up"
-            style={{ animationDelay: '0.6s', opacity: 0, animationFillMode: 'forwards' }}
-          >
-            <a href="#contact" className="btn-primary group">
-              <span>Start a Project</span>
-              <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-            </a>
-            <a href="#work" className="btn-secondary group">
-              <Play className="h-4 w-4 fill-current" />
-              <span>Explore Our Work</span>
-            </a>
-          </div>
-
-          {/* Credibility indicators */}
-          <div
-            className="mt-16 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm font-medium text-ink-300 animate-fade-up"
-            style={{ animationDelay: '0.8s', opacity: 0, animationFillMode: 'forwards' }}
-          >
-            {['AI Films', 'Commercials', 'Product Videos', 'Social Content'].map((item, i) => (
-              <span key={item} className="flex items-center gap-6">
-                {i > 0 && <span className="h-1 w-1 rounded-full bg-ink-500" />}
-                <span className="transition-colors duration-300 hover:text-white">{item}</span>
-              </span>
-            ))}
-          </div>
+            Watch Demo
+          </button>
         </div>
       </div>
 
-      {/* Scroll indicator */}
+      {/* ── Scroll indicator ──────────────────────────────────────── //uppercase tracking-[0.3em] scroll*/}
       <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex">
-        <span className="text-[10px] font-medium uppercase tracking-[0.3em] text-ink-400">Scroll</span>
-        <div className="relative h-12 w-px overflow-hidden bg-ink-700">
-          <div className="absolute inset-x-0 top-0 h-1/2 animate-[float_2s_ease-in-out_infinite] bg-gradient-to-b from-accent-400 to-transparent" />
+        <div className="relative h-11 w-px overflow-hidden bg-white/20">
+          <div className="absolute inset-x-0 top-0 h-1/2 animate-[float_2s_ease-in-out_infinite] bg-gradient-to-b from-white/80 to-transparent" />
         </div>
+        <span className="text-[10px] font-medium  text-white/40"></span> 
       </div>
     </section>
   );
 }
-

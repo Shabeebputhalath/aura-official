@@ -13,6 +13,7 @@ import {
   Menu,
   X,
   ArrowLeft,
+  LogOut,
 } from 'lucide-react';
 
 export type AdminPage =
@@ -46,11 +47,13 @@ export function AdminShell({
   current,
   onNavigate,
   onExit,
+  onLogout,
   children,
 }: {
   current: AdminPage;
   onNavigate: (page: AdminPage) => void;
   onExit: () => void;
+  onLogout: () => void;
   children: ReactNode;
 }) {
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -103,13 +106,20 @@ export function AdminShell({
       </nav>
 
       {/* Exit to site */}
-      <div className="border-t border-white/[0.04] p-3">
+      <div className="border-t border-white/[0.04] p-3 space-y-1">
         <button
           onClick={onExit}
           className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-ink-300 transition-all duration-300 hover:bg-white/[0.03] hover:text-white"
         >
           <ArrowLeft className="h-5 w-5" />
           Back to Website
+        </button>
+        <button
+          onClick={onLogout}
+          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-red-400/70 transition-all duration-300 hover:bg-red-500/[0.06] hover:text-red-400"
+        >
+          <LogOut className="h-5 w-5" />
+          Log Out
         </button>
       </div>
     </div>

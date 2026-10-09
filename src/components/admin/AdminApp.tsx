@@ -10,12 +10,18 @@ import { TestimonialsPage } from '@/components/admin/pages/TestimonialsPage';
 import { ContentPage } from '@/components/admin/pages/ContentPage';
 import { SettingsPage } from '@/components/admin/pages/SettingsPage';
 
-export function AdminApp({ onExit }: { onExit: () => void }) {
+export function AdminApp({
+  onExit,
+  onLogout,
+}: {
+  onExit: () => void;
+  onLogout: () => void;
+}) {
   const [page, setPage] = useState<AdminPage>('dashboard');
 
   return (
     <ToastProvider>
-      <AdminShell current={page} onNavigate={setPage} onExit={onExit}>
+      <AdminShell current={page} onNavigate={setPage} onExit={onExit} onLogout={onLogout}>
         {page === 'dashboard' && <DashboardPage onNavigate={setPage} />}
         {page === 'projects' && <ProjectsPage />}
         {page === 'services' && <ServicesPage />}
@@ -28,4 +34,3 @@ export function AdminApp({ onExit }: { onExit: () => void }) {
     </ToastProvider>
   );
 }
-

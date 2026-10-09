@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import TrustSection from '@/components/TrustSection';
@@ -19,6 +19,11 @@ import AboutPage from '@/components/AboutPage';
 import ServicesPage from '@/components/ServicesPage';
 import ContactPage from '@/components/ContactPage';
 import { AdminApp } from '@/components/admin/AdminApp';
+import AdminLogin, {
+  getStoredSession,
+  clearSession,
+} from '@/components/admin/AdminLogin';
+import PageLoader from '@/components/PageLoader';
 import { Settings } from 'lucide-react';
 
 type Route = 'home' | 'work' | 'about' | 'services' | 'contact' | 'admin';
@@ -32,6 +37,22 @@ interface NavHandlers {
 
 function App() {
   const [route, setRoute] = useState<Route>('home');
+  const [adminAuthed, setAdminAuthed] = useState<boolean>(() => getStoredSession());
+
+  // Loader is shown once on the very first page open.
+  // Skip it entirely if the user is going straight to /admin.
+  const initialRoute = window.location.hash;
+  const [loaderDone, setLoaderDone] = useState(
+    () => initialRoute === '#/admin'
+  );
+
+  const stopScroll = useCallback(() => {
+    document.body.style.overflow = 'hidden';
+  }, []);
+
+  const startScroll = useCallback(() => {
+    document.body.style.overflow = '';
+  }, []);
 
   useEffect(() => {
     const handleHash = () => {
@@ -58,6 +79,12 @@ function App() {
     window.scrollTo({ top: 0 });
   }
 
+  function handleLogout() {
+    clearSession();
+    setAdminAuthed(false);
+    navigate('home');
+  }
+
   const navHandlers: NavHandlers = {
     onNavigateWork: () => navigate('work'),
     onNavigateAbout: () => navigate('about'),
@@ -65,75 +92,110 @@ function App() {
     onNavigateContact: () => navigate('contact'),
   };
 
+  // ── Page loader (renders on top of everything until done) ────
+  const loader = !loaderDone ? (
+    <PageLoader
+      onFinish={() => setLoaderDone(true)}
+      stopScroll={stopScroll}
+      startScroll={startScroll}
+    />
+  ) : null;
+
+  // ── Admin route ──────────────────────────────────────────────
   if (route === 'admin') {
-    return <AdminApp onExit={() => navigate('home')} />;
+    if (!adminAuthed) {
+      return <AdminLogin onSuccess={() => setAdminAuthed(true)} />;
+    }
+    return (
+      <AdminApp
+        onExit={() => navigate('home')}
+        onLogout={handleLogout}
+      />
+    );
   }
 
+  // ── Public routes ────────────────────────────────────────────
   if (route === 'work') {
     return (
-      <div className="relative min-h-screen bg-ink-950">
-        <Navbar {...navHandlers} />
-        <WorkPage />
-        <Footer />
-        <AdminButton onClick={() => navigate('admin')} />
-      </div>
+      <>
+        {loader}
+        <div className="relative min-h-screen bg-ink-950">
+          <Navbar {...navHandlers} />
+          <WorkPage />
+          <Footer />
+          <AdminButton onClick={() => navigate('admin')} />
+        </div>
+      </>
     );
   }
 
   if (route === 'about') {
     return (
-      <div className="relative min-h-screen bg-ink-950">
-        <Navbar {...navHandlers} />
-        <AboutPage onNavigateHome={() => navigate('home')} />
-        <Footer />
-        <AdminButton onClick={() => navigate('admin')} />
-      </div>
+      <>
+        {loader}
+        <div className="relative min-h-screen bg-ink-950">
+          <Navbar {...navHandlers} />
+          <AboutPage onNavigateHome={() => navigate('home')} />
+          <Footer />
+          <AdminButton onClick={() => navigate('admin')} />
+        </div>
+      </>
     );
   }
 
   if (route === 'services') {
     return (
-      <div className="relative min-h-screen bg-ink-950">
-        <Navbar {...navHandlers} />
-        <ServicesPage onNavigateHome={() => navigate('home')} />
-        <Footer />
-        <AdminButton onClick={() => navigate('admin')} />
-      </div>
+      <>
+        {loader}
+        <div className="relative min-h-screen bg-ink-950">
+          <Navbar {...navHandlers} />
+          <ServicesPage onNavigateHome={() => navigate('home')} />
+          <Footer />
+          <AdminButton onClick={() => navigate('admin')} />
+        </div>
+      </>
     );
   }
 
   if (route === 'contact') {
     return (
-      <div className="relative min-h-screen bg-ink-950">
-        <Navbar {...navHandlers} />
-        <ContactPage onNavigateHome={() => navigate('home')} />
-        <Footer />
-        <AdminButton onClick={() => navigate('admin')} />
-      </div>
+      <>
+        {loader}
+        <div className="relative min-h-screen bg-ink-950">
+          <Navbar {...navHandlers} />
+          <ContactPage onNavigateHome={() => navigate('home')} />
+          <Footer />
+          <AdminButton onClick={() => navigate('admin')} />
+        </div>
+      </>
     );
   }
 
+  // ── Home ─────────────────────────────────────────────────────
   return (
-    <div className="relative min-h-screen bg-ink-950">
-      <Navbar {...navHandlers} />
-      <main>
-        <Hero />
-        <TrustSection />
-        <About />
-        <WorkShowcase onNavigateWork={() => navigate('work')} />
-        <Services />
-        <WhyAIHuman />
-        <Process />
-        <Capabilities />
-        <Pricing />
-        <Testimonials />
-        <FAQ />
-        <Contact />
-        <FinalCTA />
-      </main>
-      <Footer />
-      <AdminButton onClick={() => navigate('admin')} />
-    </div>
+    <>
+      {loader}
+      <div className="relative min-h-screen bg-ink-950">
+        <Navbar {...navHandlers} />
+        <main>
+          <Hero />
+          <TrustSection />
+          <About />
+          <Capabilities />
+          <WorkShowcase onNavigateWork={() => navigate('work')} />
+          <Services />
+          <WhyAIHuman />
+          <Process />
+          <Pricing />
+          <Testimonials />
+          <FAQ />
+          <Contact />
+          <FinalCTA />
+        </main>
+        <Footer />
+        <AdminButton onClick={() => navigate('admin')} />
+      </div>
+    </>
   );
 }
 
@@ -151,4 +213,3 @@ function AdminButton({ onClick }: { onClick: () => void }) {
 }
 
 export default App;
-

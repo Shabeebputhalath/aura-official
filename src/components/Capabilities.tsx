@@ -31,7 +31,7 @@ export default function Capabilities() {
           {doubled.map((cap, i) => (
             <div
               key={`${cap.label}-${i}`}
-              className="group relative h-72 w-64 shrink-0 overflow-hidden border border-white/[0.06] sm:h-80 sm:w-72"
+              className="group relative h-72 w-64 shrink-0 overflow-hidden border border-white/[0.06] sm:h-90 sm:w-72"
             >
               <img
                 src={cap.image}

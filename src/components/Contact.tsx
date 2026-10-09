@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { ArrowUpRight, Check, Upload } from 'lucide-react';
 import { useReveal } from '@/hooks/useReveal';
+import { supabase } from '@/lib/supabase';
 
 interface FormData {
   fullName: string;
@@ -46,6 +47,8 @@ export default function Contact() {
   const { ref, visible } = useReveal();
   const [form, setForm] = useState<FormData>(initialForm);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
 
   const validate = (): boolean => {
@@ -63,11 +66,33 @@ export default function Contact() {
     return Object.keys(e).length === 0;
   };
 
-  const handleSubmit = (ev: React.FormEvent) => {
+  const handleSubmit = async (ev: React.FormEvent) => {
     ev.preventDefault();
-    if (validate()) {
-      setSubmitted(true);
+    if (!validate()) return;
+
+    setSubmitting(true);
+    setSubmitError(null);
+
+    const { error } = await supabase.from('inquiries').insert({
+      full_name: form.fullName,
+      company: form.company,
+      email: form.email,
+      project_type: form.projectType,
+      budget: form.budget,
+      timeline: form.timeline,
+      details: form.details,
+      reference_url: form.reference,
+      status: 'new',
+    });
+
+    setSubmitting(false);
+
+    if (error) {
+      setSubmitError('Something went wrong. Please try again or email us directly.');
+      return;
     }
+
+    setSubmitted(true);
   };
 
   const update = (key: keyof FormData, value: string) => {
@@ -240,10 +265,14 @@ export default function Contact() {
                 </div>
 
                 {/* Submit */}
-                <button type="submit" className="btn-primary group w-full justify-center">
-                  <span>Send Project Inquiry</span>
-                  <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <button type="submit" disabled={submitting} className="btn-primary group w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed">
+                  <span>{submitting ? 'Sending…' : 'Send Project Inquiry'}</span>
+                  {!submitting && <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />}
                 </button>
+
+                {submitError && (
+                  <p className="text-center text-sm text-red-400">{submitError}</p>
+                )}
               </form>
             )}
           </div>
