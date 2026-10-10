@@ -14,6 +14,7 @@ import {
   X,
   ArrowLeft,
   LogOut,
+  Sparkles,
 } from 'lucide-react';
 
 export type AdminPage =
@@ -23,6 +24,7 @@ export type AdminPage =
   | 'pricing'
   | 'inquiries'
   | 'testimonials'
+  | 'capabilities'
   | 'content'
   | 'settings';
 
@@ -33,14 +35,15 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'projects', label: 'Projects', icon: Film },
-  { id: 'services', label: 'Services', icon: Layers },
-  { id: 'pricing', label: 'Pricing', icon: DollarSign },
-  { id: 'inquiries', label: 'Inquiries', icon: Mail },
+  { id: 'dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
+  { id: 'projects',     label: 'Projects',     icon: Film },
+  { id: 'services',     label: 'Services',     icon: Layers },
+  { id: 'pricing',      label: 'Pricing',      icon: DollarSign },
+  { id: 'inquiries',    label: 'Inquiries',    icon: Mail },
   { id: 'testimonials', label: 'Testimonials', icon: Quote },
-  { id: 'content', label: 'Content', icon: FileText },
-  { id: 'settings', label: 'Settings', icon: Settings },
+  { id: 'capabilities', label: 'Capabilities', icon: Sparkles },
+  { id: 'content',      label: 'Content',      icon: FileText },
+  { id: 'settings',     label: 'Settings',     icon: Settings },
 ];
 
 export function AdminShell({

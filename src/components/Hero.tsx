@@ -2,7 +2,7 @@ import { ArrowRight, Play } from 'lucide-react';
 
 export default function Hero() {
   return (
-    <section className="relative flex min-h-screen items-center justify-center overflow-hidden">
+    <section className="relative min-h-screen overflow-hidden">
 
       {/* ── Background video ──────────────────────────────────────── */}
       <div className="absolute inset-0">
@@ -11,89 +11,131 @@ export default function Hero() {
           loop
           muted
           playsInline
-          className="h-full w-full object-cover"
-          style={{ filter: 'brightness(0.72) saturate(1.15)' }}
+          className="h-full w-full object-cover object-center"
+          style={{ filter: 'brightness(0.82) saturate(1.2)' }}
         >
           <source src="/Wildflowers_swaying_in_breeze_20261009072722.mp4" type="video/mp4" />
         </video>
 
-        {/* Soft vignette — lighter so the video stays vibrant */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/15 via-black/10 to-black/35" />
-        {/* Subtle purple/accent tint to tie into brand colour */}
-        <div className="absolute inset-0 bg-accent-900/10 mix-blend-multiply" />
-        {/* Bottom fade — only the last strip fades to site bg, grass stays visible */}
-        <div className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-t from-ink-950/90 via-ink-950/30 to-transparent" />
+        {/* Very light top vignette — keeps navbar area readable */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-transparent" />
+
+        {/* Bottom shadow fade into next section */}
+        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-ink-950/85 via-ink-950/25 to-transparent" />
       </div>
 
-      {/* ── Centered content ──────────────────────────────────────── */}
-      <div className="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-6 pb-20 pt-36 text-center">
+      {/* ── Hero content — positioned at ~38% from top like the reference ── */}
+      <div className="relative z-10 flex min-h-screen flex-col items-center justify-start px-4">
 
-        {/* Badge pill — "We just raised 20M 🚀" style */}
-        <div
-          className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 backdrop-blur-md animate-fade-down"
-          style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}
-        >
-          <span className="text-sm font-medium text-white/90 tracking-wide">
-            AI Video Production Studio&nbsp;✦
-          </span>
-        </div>
+        {/*
+          Spacer pushes content down past the navbar.
+          Reference image: badge sits at ~28% viewport height.
+          pt-[26vh] achieves this across screen sizes.
+        */}
+        <div className="flex flex-col items-center text-center" style={{ paddingTop: 'clamp(120px, 26vh, 220px)' }}>
 
-        {/* Headline — two lines, light + bold mix */}
-        <h1
-          className="animate-fade-up font-display leading-[1.08] tracking-tight text-white"
-          style={{
-            animationDelay: '0.2s',
-            opacity: 0,
-            animationFillMode: 'forwards',
-            fontSize: 'clamp(2.8rem, 8vw, 6rem)',
-          }}
-        >
-          <span className="font-light">Create with </span><span className="font-bold">AI.</span>
-          <br />
-          <span className="font-bold">Cinematically.</span>
-        </h1>
-
-        {/* Sub-copy — two-line centred, lighter weight */}
-        <p
-          className="mt-6 max-w-xl text-base font-normal leading-relaxed text-white/75 sm:text-lg animate-fade-up"
-          style={{ animationDelay: '0.38s', opacity: 0, animationFillMode: 'forwards' }}
-        >
-          From concept to final frame, we craft cinematic AI videos that make
-          <br className="hidden sm:block" />
-          brands impossible to ignore.
-        </p>
-
-        {/* CTA row — filled pill + ghost text */}
-        <div
-          className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center animate-fade-up"
-          style={{ animationDelay: '0.52s', opacity: 0, animationFillMode: 'forwards' }}
-        >
-          {/* Filled pill */}
-          <a
-            href="#contact"
-            className="group inline-flex items-center gap-2 rounded-full bg-white px-7 py-3.5 text-sm font-semibold text-ink-950 shadow-lg shadow-black/20 transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/90 hover:shadow-xl hover:shadow-black/25"
+          {/* ── Badge pill ─────────────────────────────────────────── */}
+          {/*
+            Reference: small pill, very light gray/white frosted background,
+            thin border, small text, emoji at the end.
+            Sits centered just above the headline.
+          */}
+          <div
+            className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-white/25 bg-white/12 px-4 py-1.5 shadow-sm backdrop-blur-md animate-fade-down"
+            style={{ animationDelay: '0.05s', opacity: 0, animationFillMode: 'forwards' }}
           >
-            Get Started
-            <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-          </a>
-
-          {/* Ghost / text CTA */}
-          <button className="inline-flex items-center gap-2.5 rounded-full px-6 py-3 text-sm font-semibold text-white transition-all duration-300 hover:bg-white/10">
-            <span className="flex h-7 w-7 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-              <Play className="h-3 w-3 translate-x-px fill-white text-white" />
+            <span className="text-[13px] font-medium text-white/90 tracking-wide">
+              AI Video Production Studio&nbsp;✦
             </span>
-            Watch Demo
-          </button>
-        </div>
+          </div>
+
+          {/* ── Headline ───────────────────────────────────────────── */}
+          {/*
+            Reference: ONE visual line — light "Design" (font-light/300)
+            immediately followed by bold "with ease." (font-bold/700).
+            No line break. Very large. Pure white. Tight leading.
+          */}
+          <h1
+            className="animate-fade-up font-display tracking-[-0.02em] text-black"
+            style={{
+              animationDelay: '0.15s',
+              opacity: 0,
+              animationFillMode: 'forwards',
+              fontSize: 'clamp(3rem, 7.5vw, 5.5rem)',
+              lineHeight: 1.06,
+              fontWeight: 300,
+            }}
+          >
+            {/* "Create with" — light */}
+            <span style={{ fontWeight: 700 }}>Create with </span>
+            {/* "AI." — bold, same size */}
+            <span style={{ fontWeight: 700 }}>AI.</span>
+          </h1>
+
+          {/* ── Sub-copy ───────────────────────────────────────────── */}
+          {/*
+            Reference: two short centered lines, smaller text, white/75 opacity.
+            "Design smarter with AI that understands you."
+            "So you can take a breath."
+          */}
+          <p
+            className="mt-5 animate-fade-up font-body text-black/80"
+            style={{
+              animationDelay: '0.28s',
+              opacity: 0,
+              animationFillMode: 'forwards',
+              fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)',
+              lineHeight: 1.65,
+            }}
+          >
+            From concept to final frame, we craft cinematic AI videos<br />
+            that make brands impossible to ignore.
+          </p>
+
+          {/* ── CTA row ────────────────────────────────────────────── */}
+          {/*
+            Reference layout (left → right):
+            [  Get Started →  ]   Watch Demo
+            White filled pill  |  plain text + no border
+            They sit on the same horizontal baseline, gap ~24px.
+          */}
+          <div
+            className="mt-9 flex animate-fade-up flex-row items-center justify-center gap-6"
+            style={{ animationDelay: '0.42s', opacity: 0, animationFillMode: 'forwards' }}
+          >
+            {/* White filled pill — "Get Started →" */}
+            <a
+              href="#contact"
+              className="group inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-[14px] font-semibold text-white shadow-lg shadow-black/15 transition-all duration-250 hover:-translate-y-px hover:bg-white/95 hover:shadow-xl"
+            >
+              Get Started
+              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-250 group-hover:translate-x-0.5" />
+            </a>
+
+            {/* Plain text "Watch Demo" — no box, no border */}
+            <button className="inline-flex items-center gap-2 text-[14px] font-medium text-black/90 transition-all duration-250 hover:text-black">
+              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-white/30 bg-white/10 backdrop-blur-sm">
+                <Play className="h-2.5 w-2.5 translate-x-px fill-white text-black" />
+              </span>
+              Watch Demo
+            </button>
+          </div>
+
+        </div>{/* end content block */}
       </div>
 
-      {/* ── Scroll indicator ──────────────────────────────────────── //uppercase tracking-[0.3em] scroll*/}
-      <div className="absolute bottom-8 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-2 lg:flex">
-        <div className="relative h-11 w-px overflow-hidden bg-white/20">
-          <div className="absolute inset-x-0 top-0 h-1/2 animate-[float_2s_ease-in-out_infinite] bg-gradient-to-b from-white/80 to-transparent" />
+      {/* ── Scroll line indicator ─────────────────────────────────── */}
+      {/*<div className="absolute bottom-10 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1.5 lg:flex">
+        <div className="relative h-10 w-px overflow-hidden bg-white/20">
+          <div
+            className="absolute inset-x-0 top-0 h-1/2 bg-gradient-to-b from-white/70 to-transparent"
+            style={{ animation: 'float 2s ease-in-out infinite' }}
+          />
         </div>
-        <span className="text-[10px] font-medium  text-white/40"></span> 
-      </div>
+        <span className="text-[9px] font-medium uppercase tracking-[0.3em] text-white/35">
+          Scroll
+        </span>
+      </div>*/}
     </section>
   );
 }

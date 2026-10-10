@@ -7,6 +7,7 @@ import { ServicesPage } from '@/components/admin/pages/ServicesPage';
 import { PricingPage } from '@/components/admin/pages/PricingPage';
 import { InquiriesPage } from '@/components/admin/pages/InquiriesPage';
 import { TestimonialsPage } from '@/components/admin/pages/TestimonialsPage';
+import { CapabilitiesPage } from '@/components/admin/pages/CapabilitiesPage';
 import { ContentPage } from '@/components/admin/pages/ContentPage';
 import { SettingsPage } from '@/components/admin/pages/SettingsPage';
 
@@ -22,14 +23,15 @@ export function AdminApp({
   return (
     <ToastProvider>
       <AdminShell current={page} onNavigate={setPage} onExit={onExit} onLogout={onLogout}>
-        {page === 'dashboard' && <DashboardPage onNavigate={setPage} />}
-        {page === 'projects' && <ProjectsPage />}
-        {page === 'services' && <ServicesPage />}
-        {page === 'pricing' && <PricingPage />}
-        {page === 'inquiries' && <InquiriesPage />}
+        {page === 'dashboard'    && <DashboardPage onNavigate={setPage} />}
+        {page === 'projects'     && <ProjectsPage />}
+        {page === 'services'     && <ServicesPage />}
+        {page === 'pricing'      && <PricingPage />}
+        {page === 'inquiries'    && <InquiriesPage />}
         {page === 'testimonials' && <TestimonialsPage />}
-        {page === 'content' && <ContentPage />}
-        {page === 'settings' && <SettingsPage />}
+        {page === 'capabilities' && <CapabilitiesPage />}
+        {page === 'content'      && <ContentPage />}
+        {page === 'settings'     && <SettingsPage />}
       </AdminShell>
     </ToastProvider>
   );
