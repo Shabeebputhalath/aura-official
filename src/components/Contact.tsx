@@ -1,357 +1,202 @@
 import { useState } from 'react';
-import { ArrowUpRight, Check, Upload } from 'lucide-react';
-import { useReveal } from '@/hooks/useReveal';
+import { Check, Paperclip } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-interface FormData {
-  fullName: string;
-  company: string;
-  email: string;
-  projectType: string;
-  budget: string;
-  timeline: string;
-  details: string;
-  reference: string;
-}
-
-const projectTypes = [
+const interests = [
   'AI Commercial',
   'Brand Film',
   'Product Video',
   'Social Media',
   'Music Video',
-  'Concept Film',
-  'AI Character',
   'Other',
 ];
 
-const budgetRanges = [
-  '$500–$1,500',
-  '$1,500–$5,000',
-  '$5,000–$10,000',
-  '$10,000+',
-];
+interface FormState {
+  name: string;
+  email: string;
+  project: string;
+}
 
-const initialForm: FormData = {
-  fullName: '',
-  company: '',
-  email: '',
-  projectType: '',
-  budget: '',
-  timeline: '',
-  details: '',
-  reference: '',
-};
+const empty: FormState = { name: '', email: '', project: '' };
 
 export default function Contact() {
-  const { ref, visible } = useReveal();
-  const [form, setForm] = useState<FormData>(initialForm);
-  const [submitted, setSubmitted] = useState(false);
+  const [selected, setSelected]     = useState<string[]>([]);
+  const [form, setForm]             = useState<FormState>(empty);
   const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+  const [submitted, setSubmitted]   = useState(false);
+  const [error, setError]           = useState<string | null>(null);
 
-  const validate = (): boolean => {
-    const e: Partial<Record<keyof FormData, string>> = {};
-    if (!form.fullName.trim()) e.fullName = 'Please enter your name';
-    if (!form.email.trim()) {
-      e.email = 'Please enter your email';
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      e.email = 'Please enter a valid email';
-    }
-    if (!form.projectType) e.projectType = 'Please select a project type';
-    if (!form.budget) e.budget = 'Please select a budget range';
-    if (!form.details.trim()) e.details = 'Please tell us about your project';
-    setErrors(e);
-    return Object.keys(e).length === 0;
-  };
+  function toggleTag(tag: string) {
+    setSelected(prev =>
+      prev.includes(tag) ? prev.filter(t => t !== tag) : [...prev, tag]
+    );
+  }
 
-  const handleSubmit = async (ev: React.FormEvent) => {
-    ev.preventDefault();
-    if (!validate()) return;
-
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!form.name.trim() || !form.email.trim()) return;
     setSubmitting(true);
-    setSubmitError(null);
-
-    const { error } = await supabase.from('inquiries').insert({
-      full_name: form.fullName,
-      company: form.company,
-      email: form.email,
-      project_type: form.projectType,
-      budget: form.budget,
-      timeline: form.timeline,
-      details: form.details,
-      reference_url: form.reference,
+    setError(null);
+    const { error: err } = await supabase.from('inquiries').insert({
+      full_name:    form.name,
+      email:        form.email,
+      project_type: selected.join(', ') || 'General',
+      details:      form.project,
+      budget: '', timeline: '', reference_url: '', company: '',
       status: 'new',
     });
-
     setSubmitting(false);
-
-    if (error) {
-      setSubmitError('Something went wrong. Please try again or email us directly.');
-      return;
-    }
-
+    if (err) { setError('Something went wrong. Please try again.'); return; }
     setSubmitted(true);
-  };
-
-  const update = (key: keyof FormData, value: string) => {
-    setForm((prev) => ({ ...prev, [key]: value }));
-    if (errors[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
-  };
+  }
 
   return (
-    <section id="contact" className="relative border-t border-white/[0.04] py-24 lg:py-32">
-      {/* Background glow */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-accent-600/10 blur-[120px]" />
-        <div className="absolute right-1/4 bottom-1/4 h-80 w-80 rounded-full bg-accent-500/5 blur-[100px]" />
+    <section id="contact" className="relative min-h-screen overflow-hidden">
+
+      {/* ── Full-bleed video — visible on BOTH sides ─────────────── */}
+      <div className="absolute inset-0">
+        <video
+          autoPlay loop muted playsInline
+          className="h-full w-full object-cover object-center"
+        >
+          <source src="/Purple_liquid_flows_on_black_20260921175622.mp4" type="video/mp4" />
+        </video>
+        {/* Subtle dark scrim so form text stays readable */}
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl px-6 lg:px-10">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
-          {/* Left: heading */}
-          <div ref={ref}>
-            <p className={`reveal section-label transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>
-              Start a Project
-            </p>
-            <h2
-              className={`reveal mt-6 font-display text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl transition-all duration-700 ${visible ? 'reveal-visible' : ''
-                }`}
-              style={{ transitionDelay: '100ms' }}
-            >
-              Have an Idea?
-              <br />
-              Let's Make It <span className="text-gradient-accent">Real.</span>
-            </h2>
-            <p
-              className={`reveal mt-6 text-lg leading-relaxed text-ink-200 transition-all duration-700 ${visible ? 'reveal-visible' : ''
-                }`}
-              style={{ transitionDelay: '200ms' }}
-            >
-              Tell us what you're imagining. We'll turn the idea into a cinematic
-              production plan.
-            </p>
+      {/* ── Brand label top-left ─────────────────────────────────── */}
+      <div className="absolute left-8 top-8 z-10 sm:left-12 sm:top-10">
+        {/* <span className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">
+          AURA AI
+        </span> */}
+      </div>
 
-            {/* Quick info */}
-            <div
-              className={`reveal mt-12 space-y-5 transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}
-              style={{ transitionDelay: '300ms' }}
-            >
-              <div>
-                <div className="text-xs font-medium uppercase tracking-[0.15em] text-ink-400">Email</div>
-                <div className="mt-1 text-base text-white">hello@auraai.studio</div>
-              </div>
-              <div>
-                <div className="text-xs font-medium uppercase tracking-[0.15em] text-ink-400">Location</div>
-                <div className="mt-1 text-base text-white">Remote · Worldwide</div>
-              </div>
-            </div>
-          </div>
+      {/* ── Left headline + email — visible over video ───────────── */}
+      <div className="absolute bottom-10 left-8 z-10 sm:bottom-14 sm:left-12 lg:bottom-16 lg:left-16">
+        <h2
+          className="font-display font-bold leading-[1.05] tracking-tight text-white"
+          style={{ fontSize: 'clamp(2rem, 4vw, 3.25rem)', maxWidth: '10ch' }}
+        >
+          Have a project?
+          <br />
+          We would love
+          to help.
+        </h2>
+        <p className="mt-6 text-sm text-white/50">hello@auraai.studio</p>
+      </div>
 
-          {/* Right: form / success */}
-          <div className={`reveal-scale ${visible ? 'reveal-visible' : ''}`} style={{ transitionDelay: '200ms' }}>
-            {submitted ? (
-              <div className="flex min-h-[400px] flex-col items-center justify-center rounded-2xl border border-accent-500/20 bg-gradient-to-b from-accent-500/[0.08] to-ink-950 p-10 text-center">
-                <div className="flex h-16 w-16 items-center justify-center rounded-full border border-accent-500/30 bg-accent-500/10">
-                  <Check className="h-8 w-8 text-accent-400" />
-                </div>
-                <h3 className="mt-6 font-display text-2xl font-bold text-white">
-                  Thanks — your project is on its way.
-                </h3>
-                <p className="mt-3 text-base text-ink-200">
-                  Your project is on its way to our creative team. We'll be in touch
-                  within 24 hours.
-                </p>
-                <button
-                  onClick={() => {
-                    setForm(initialForm);
-                    setSubmitted(false);
-                  }}
-                  className="mt-8 btn-secondary"
-                >
-                  <span>Send Another Inquiry</span>
-                </button>
+      {/* ── Centered form panel — floating on top of the full video ─ */}
+      <div className="relative z-20 flex min-h-screen items-center justify-center px-4 py-24 lg:justify-end lg:pr-16 xl:pr-24">
+        <div
+          className="w-full max-w-xl overflow-hidden"
+          style={{
+            background:   'rgba(10,10,10,0.82)',
+            backdropFilter: 'blur(18px)',
+            WebkitBackdropFilter: 'blur(18px)',
+            borderRadius: '1.25rem',
+            border:       '1px solid rgba(255,255,255,0.07)',
+            minHeight:    '88vh',
+            display:      'flex',
+            flexDirection:'column',
+          }}
+        >
+          {submitted ? (
+            /* ── Success ── */
+            <div className="flex flex-col items-center gap-5 px-8 py-14 text-center">
+              <div className="flex h-14 w-14 items-center justify-center rounded-full border border-white/10 bg-white/5">
+                <Check className="h-6 w-6 text-white" />
               </div>
-            ) : (
-              <form
-                onSubmit={handleSubmit}
-                className="space-y-5 rounded-2xl border border-white/[0.06] bg-ink-850/60 p-8 backdrop-blur-sm lg:p-10"
+              <h3 className="font-display text-xl font-bold text-white">Request received.</h3>
+              <p className="max-w-xs text-sm leading-relaxed text-white/50">
+                Thanks for reaching out — we'll be in touch within 24 hours.
+              </p>
+              <button
+                onClick={() => { setForm(empty); setSelected([]); setSubmitted(false); }}
+                className="mt-2 rounded-full border border-white/20 px-6 py-2.5 text-sm font-medium text-white transition-colors hover:bg-white/8"
               >
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <FormField
-                    label="Full Name"
-                    value={form.fullName}
-                    onChange={(v) => update('fullName', v)}
-                    error={errors.fullName}
-                    placeholder="Jane Doe"
-                  />
-                  <FormField
-                    label="Company / Brand"
-                    value={form.company}
-                    onChange={(v) => update('company', v)}
-                    placeholder="Acme Inc."
-                  />
-                </div>
+                Send another
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
 
-                <FormField
-                  label="Email"
-                  type="email"
-                  value={form.email}
-                  onChange={(v) => update('email', v)}
-                  error={errors.email}
-                  placeholder="jane@acme.com"
-                />
+              {/* Mini nav */}
+              <div className="flex items-center justify-end gap-6 border-b border-white/[0.07] px-7 py-4">
+                <span className="cursor-pointer text-[12px] text-white/35 transition-colors hover:text-white/60">Works</span>
+                <span className="cursor-pointer text-[12px] text-white/35 transition-colors hover:text-white/60">About</span>
+                <span className="text-[12px] font-semibold text-white">Contacts</span>
+              </div>
 
-                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-                  <SelectField
-                    label="Project Type"
-                    value={form.projectType}
-                    onChange={(v) => update('projectType', v)}
-                    options={projectTypes}
-                    error={errors.projectType}
-                    placeholder="Select type"
-                  />
-                  <SelectField
-                    label="Estimated Budget"
-                    value={form.budget}
-                    onChange={(v) => update('budget', v)}
-                    options={budgetRanges}
-                    error={errors.budget}
-                    placeholder="Select range"
-                  />
-                </div>
+              {/* Body */}
+              <div className="flex flex-1 flex-col justify-between gap-8 px-7 py-8">
 
-                <FormField
-                  label="Desired Timeline"
-                  value={form.timeline}
-                  onChange={(v) => update('timeline', v)}
-                  placeholder="e.g. 2–3 weeks"
-                />
-
+                {/* Interested in */}
                 <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
-                    Tell us about your project
-                  </label>
-                  <textarea
-                    value={form.details}
-                    onChange={(e) => update('details', e.target.value)}
-                    rows={4}
-                    placeholder="Describe your vision, goals, and any references..."
-                    className={`w-full resize-none rounded-lg border bg-ink-950/50 px-4 py-3 text-sm text-white placeholder:text-ink-500 transition-colors focus:outline-none ${errors.details ? 'border-red-500/50' : 'border-white/10 focus:border-accent-500/40'
-                      }`}
-                  />
-                  {errors.details && (
-                    <p className="mt-1.5 text-xs text-red-400">{errors.details}</p>
-                  )}
-                </div>
-
-                <FormField
-                  label="Reference / Website URL"
-                  value={form.reference}
-                  onChange={(v) => update('reference', v)}
-                  placeholder="https://..."
-                />
-
-                {/* Upload brief */}
-                <div>
-                  <label className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
-                    Upload Brief <span className="text-ink-500">(optional)</span>
-                  </label>
-                  <div className="flex cursor-pointer items-center gap-3 rounded-lg border border-dashed border-white/15 bg-ink-950/30 px-4 py-4 transition-colors hover:border-accent-500/30">
-                    <Upload className="h-5 w-5 text-ink-400" />
-                    <span className="text-sm text-ink-300">Drop a file or click to upload</span>
+                  <p className="mb-3.5 text-[12px] text-white/45">I'm interested in…</p>
+                  <div className="flex flex-wrap gap-2">
+                    {interests.map(tag => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => toggleTag(tag)}
+                        className="rounded-full px-3.5 py-1 text-[12px] font-medium transition-all duration-150"
+                        style={{
+                          border:     `1px solid ${selected.includes(tag) ? 'rgba(255,255,255,0.65)' : 'rgba(255,255,255,0.15)'}`,
+                          background: selected.includes(tag) ? 'rgba(255,255,255,0.1)' : 'transparent',
+                          color:      selected.includes(tag) ? '#ffffff' : 'rgba(255,255,255,0.5)',
+                        }}
+                      >
+                        {tag}
+                      </button>
+                    ))}
                   </div>
                 </div>
 
-                {/* Submit */}
-                <button type="submit" disabled={submitting} className="btn-primary group w-full justify-center disabled:opacity-60 disabled:cursor-not-allowed">
-                  <span>{submitting ? 'Sending…' : 'Send Project Inquiry'}</span>
-                  {!submitting && <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />}
-                </button>
+                {/* Underline inputs */}
+                <div className="flex flex-col gap-0">
+                  {[
+                    { key: 'name',    type: 'text',  ph: 'Your name',                    req: true  },
+                    { key: 'email',   type: 'email', ph: 'Your email',                   req: true  },
+                    { key: 'project', type: 'text',  ph: 'Tell us about your project',   req: false },
+                  ].map(field => (
+                    <div key={field.key} className="border-b border-white/[0.1] py-3.5">
+                      <input
+                        type={field.type}
+                        required={field.req}
+                        value={form[field.key as keyof FormState]}
+                        onChange={e => setForm(f => ({ ...f, [field.key]: e.target.value }))}
+                        placeholder={field.ph}
+                        className="w-full bg-transparent text-[14px] text-white placeholder:text-white/28 focus:outline-none"
+                      />
+                    </div>
+                  ))}
+                </div>
 
-                {submitError && (
-                  <p className="text-center text-sm text-red-400">{submitError}</p>
-                )}
-              </form>
-            )}
-          </div>
+                {/* Attachment */}
+                <label className="flex cursor-pointer items-center gap-2 text-[12px] text-white/40 transition-colors hover:text-white/65">
+                  <Paperclip className="h-3.5 w-3.5" />
+                  <span>Add attachment</span>
+                  <input type="file" className="sr-only" />
+                </label>
+
+                {error && <p className="text-xs text-red-400">{error}</p>}
+
+                {/* Submit */}
+                <div className="pb-1">
+                  <button
+                    type="submit"
+                    disabled={submitting}
+                    className="rounded-full bg-white px-7 py-3 text-[13px] font-semibold text-black transition-all duration-200 hover:bg-white/90 disabled:opacity-50"
+                  >
+                    {submitting ? 'Sending…' : 'Sent request'}
+                  </button>
+                </div>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </section>
   );
 }
-
-function FormField({
-  label,
-  value,
-  onChange,
-  error,
-  placeholder,
-  type = 'text',
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  error?: string;
-  placeholder?: string;
-  type?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
-        {label}
-      </label>
-      <input
-        type={type}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        className={`w-full rounded-lg border bg-ink-950/50 px-4 py-3 text-sm text-white placeholder:text-ink-500 transition-colors focus:outline-none ${error ? 'border-red-500/50' : 'border-white/10 focus:border-accent-500/40'
-          }`}
-      />
-      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
-    </div>
-  );
-}
-
-function SelectField({
-  label,
-  value,
-  onChange,
-  options,
-  error,
-  placeholder,
-}: {
-  label: string;
-  value: string;
-  onChange: (v: string) => void;
-  options: string[];
-  error?: string;
-  placeholder?: string;
-}) {
-  return (
-    <div>
-      <label className="mb-2 block text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
-        {label}
-      </label>
-      <select
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        className={`w-full rounded-lg border bg-ink-950/50 px-4 py-3 text-sm text-white transition-colors focus:outline-none ${error ? 'border-red-500/50' : 'border-white/10 focus:border-accent-500/40'
-          } ${!value ? 'text-ink-500' : ''}`}
-      >
-        <option value="" disabled>
-          {placeholder}
-        </option>
-        {options.map((opt) => (
-          <option key={opt} value={opt} className="bg-ink-900 text-white">
-            {opt}
-          </option>
-        ))}
-      </select>
-      {error && <p className="mt-1.5 text-xs text-red-400">{error}</p>}
-    </div>
-  );
-}
-

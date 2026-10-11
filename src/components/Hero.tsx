@@ -88,8 +88,8 @@ export default function Hero() {
               lineHeight: 1.06,
             }}
           >
-            <span style={{ fontWeight: 700 }}>Create with </span>
-            <span style={{ fontWeight: 700 }}>AI.</span>
+            <span style={{ fontWeight: 550 }}>Design with </span>
+            <span style={{ fontWeight: 900 }}>AURA.</span>
           </h1>
 
           {/* Sub-copy — black */}
