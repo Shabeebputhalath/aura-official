@@ -88,7 +88,7 @@ export default function Hero() {
               lineHeight: 1.06,
             }}
           >
-            <span style={{ fontWeight: 300 }}>Create with </span>
+            <span style={{ fontWeight: 700 }}>Create with </span>
             <span style={{ fontWeight: 700 }}>AI.</span>
           </h1>
 

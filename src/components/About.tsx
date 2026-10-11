@@ -59,7 +59,7 @@ export default function About() {
           <div className={`reveal-scale relative ${visible ? 'reveal-visible' : ''}`} style={{ transitionDelay: '200ms' }}>
             <div className="relative aspect-[4/3] overflow-hidden border border-white/[0.06]">
               <img
-                src="https://images.pexels.com/photos/23384400/pexels-photo-23384400.jpeg?auto=compress&cs=tinysrgb&w=900"
+                src="/aura.jpg"
                 alt="AURA AI studio"
                 className="h-full w-full object-cover"
                 loading="lazy"
