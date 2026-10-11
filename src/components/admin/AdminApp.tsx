@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AdminShell, type AdminPage } from '@/components/admin/AdminShell';
+import { AdminThemeProvider } from '@/components/admin/AdminTheme';
 import { ToastProvider } from '@/components/admin/Toast';
 import { DashboardPage } from '@/components/admin/pages/DashboardPage';
 import { ProjectsPage } from '@/components/admin/pages/ProjectsPage';
@@ -21,18 +22,20 @@ export function AdminApp({
   const [page, setPage] = useState<AdminPage>('dashboard');
 
   return (
-    <ToastProvider>
-      <AdminShell current={page} onNavigate={setPage} onExit={onExit} onLogout={onLogout}>
-        {page === 'dashboard'    && <DashboardPage onNavigate={setPage} />}
-        {page === 'projects'     && <ProjectsPage />}
-        {page === 'services'     && <ServicesPage />}
-        {page === 'pricing'      && <PricingPage />}
-        {page === 'inquiries'    && <InquiriesPage />}
-        {page === 'testimonials' && <TestimonialsPage />}
-        {page === 'capabilities' && <CapabilitiesPage />}
-        {page === 'content'      && <ContentPage />}
-        {page === 'settings'     && <SettingsPage />}
-      </AdminShell>
-    </ToastProvider>
+    <AdminThemeProvider>
+      <ToastProvider>
+        <AdminShell current={page} onNavigate={setPage} onExit={onExit} onLogout={onLogout}>
+          {page === 'dashboard'    && <DashboardPage onNavigate={setPage} />}
+          {page === 'projects'     && <ProjectsPage />}
+          {page === 'services'     && <ServicesPage />}
+          {page === 'pricing'      && <PricingPage />}
+          {page === 'inquiries'    && <InquiriesPage />}
+          {page === 'testimonials' && <TestimonialsPage />}
+          {page === 'capabilities' && <CapabilitiesPage />}
+          {page === 'content'      && <ContentPage />}
+          {page === 'settings'     && <SettingsPage />}
+        </AdminShell>
+      </ToastProvider>
+    </AdminThemeProvider>
   );
 }

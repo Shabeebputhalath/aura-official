@@ -88,6 +88,7 @@ export interface Capability {
   id: string;
   label: string;
   image_url: string;
+  video_url: string | null;
   sort_order: number;
   is_active: boolean;
   created_at: string;

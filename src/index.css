@@ -183,3 +183,103 @@
     -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
   }
 }
+
+/* ── Admin light theme overrides ───────────────────────────────────────────── */
+/* Applied when data-admin-theme="light" is set on the page wrapper.           */
+
+[data-admin-theme="light"] {
+  /* Text */
+  --admin-text-primary:   #1a1a2e;
+  --admin-text-secondary: #6666aa;
+  --admin-text-muted:     #9999bb;
+
+  /* Cards / surfaces */
+  --admin-card-bg:        #ffffff;
+  --admin-card-border:    #e2e2ea;
+  --admin-card-hover:     #f0f0f8;
+
+  /* Input */
+  --admin-input-bg:       #ffffff;
+  --admin-input-border:   #d8d8e8;
+  --admin-input-text:     #1a1a2e;
+}
+
+/* Card component */
+[data-admin-theme="light"] .admin-card,
+[data-admin-theme="light"] [class*="rounded"][class*="border"][class*="bg-ink"] {
+  background-color: #ffffff !important;
+  border-color: #e2e2ea !important;
+  color: #1a1a2e !important;
+}
+
+/* All text that uses ink-* colours inside the admin light panel */
+[data-admin-theme="light"] .text-white        { color: #1a1a2e !important; }
+[data-admin-theme="light"] .text-ink-50       { color: #1a1a2e !important; }
+[data-admin-theme="light"] .text-ink-100      { color: #1a1a2e !important; }
+[data-admin-theme="light"] .text-ink-200      { color: #3a3a5e !important; }
+[data-admin-theme="light"] .text-ink-300      { color: #5a5a8a !important; }
+[data-admin-theme="light"] .text-ink-400      { color: #7777aa !important; }
+[data-admin-theme="light"] .text-ink-500      { color: #9999bb !important; }
+[data-admin-theme="light"] .text-ink-600      { color: #aaaacc !important; }
+
+/* Backgrounds */
+[data-admin-theme="light"] .bg-ink-950        { background-color: #f4f4f8 !important; }
+[data-admin-theme="light"] .bg-ink-900        { background-color: #ffffff !important; }
+[data-admin-theme="light"] .bg-ink-850        { background-color: #f8f8fc !important; }
+[data-admin-theme="light"] .bg-ink-900\/60    { background-color: rgba(255,255,255,0.9) !important; }
+[data-admin-theme="light"] .bg-ink-850\/60    { background-color: rgba(248,248,252,0.9) !important; }
+[data-admin-theme="light"] .bg-ink-950\/50    { background-color: rgba(244,244,248,0.8) !important; }
+[data-admin-theme="light"] [class*="bg-ink-"] { background-color: #ffffff; }
+
+/* Borders */
+[data-admin-theme="light"] .border-white\/\[0\.06\] { border-color: #e2e2ea !important; }
+[data-admin-theme="light"] .border-white\/\[0\.04\] { border-color: #ebebf4 !important; }
+[data-admin-theme="light"] .border-white\/10         { border-color: #dddde8 !important; }
+[data-admin-theme="light"] [class*="border-white"]   { border-color: #e2e2ea !important; }
+
+/* Inputs */
+[data-admin-theme="light"] input,
+[data-admin-theme="light"] textarea,
+[data-admin-theme="light"] select {
+  background-color: #ffffff !important;
+  border-color: #d8d8e8 !important;
+  color: #1a1a2e !important;
+}
+[data-admin-theme="light"] input::placeholder,
+[data-admin-theme="light"] textarea::placeholder {
+  color: #aaaacc !important;
+}
+[data-admin-theme="light"] select option {
+  background-color: #ffffff;
+  color: #1a1a2e;
+}
+
+/* Subtle hover backgrounds */
+[data-admin-theme="light"] .hover\:bg-white\/\[0\.03\]:hover { background-color: #f0f0f8 !important; }
+[data-admin-theme="light"] .hover\:bg-white\/\[0\.02\]:hover { background-color: #f4f4fc !important; }
+
+/* Badge surfaces */
+[data-admin-theme="light"] [class*="bg-white/[0.01]"]  { background-color: #f8f8fc !important; }
+[data-admin-theme="light"] [class*="bg-white/[0.02]"]  { background-color: #f4f4f8 !important; }
+
+/* Backdrop blur panels */
+[data-admin-theme="light"] .backdrop-blur-sm,
+[data-admin-theme="light"] .backdrop-blur-xl { backdrop-filter: blur(12px) !important; }
+
+/* Keep accent colours untouched in both themes */
+[data-admin-theme="light"] .text-accent-400  { color: #6b4cf5 !important; }
+[data-admin-theme="light"] .text-accent-300  { color: #7c5cff !important; }
+[data-admin-theme="light"] .bg-accent-500\/10 { background-color: rgba(124,92,255,0.08) !important; }
+[data-admin-theme="light"] .border-accent-500\/20 { border-color: rgba(124,92,255,0.25) !important; }
+
+/* Success / error / warning colours — keep readable on light bg */
+[data-admin-theme="light"] .text-emerald-300  { color: #059669 !important; }
+[data-admin-theme="light"] .text-red-300      { color: #dc2626 !important; }
+[data-admin-theme="light"] .text-red-400      { color: #ef4444 !important; }
+[data-admin-theme="light"] .text-sky-400      { color: #0284c7 !important; }
+[data-admin-theme="light"] .text-amber-400    { color: #d97706 !important; }
+
+/* Scrollbar for light mode */
+[data-admin-theme="light"] ::-webkit-scrollbar-track  { background: #f4f4f8; }
+[data-admin-theme="light"] ::-webkit-scrollbar-thumb  { background: #c8c8dc; border-radius: 9999px; }
+[data-admin-theme="light"] ::-webkit-scrollbar-thumb:hover { background: #aaaacc; }

@@ -15,13 +15,18 @@ async function hashPassword(password: string): Promise<string> {
     .join('');
 }
 
-// The correct password hash is stored in sessionStorage so the security tab
-// can validate the "current password" field without storing the plain text.
-const SESSION_KEY = 'aura_admin_auth';
+// Reads baseline password from .env → sessionStorage override → factory default
 const PASS_HASH_KEY = 'aura_admin_pass_hash';
+const ENV_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined;
 
 function getStoredHash(): string | null {
   return sessionStorage.getItem(PASS_HASH_KEY);
+}
+
+async function getBaselineHash(): Promise<string> {
+  const stored = getStoredHash();
+  if (stored) return stored;
+  return hashPassword(ENV_PASSWORD ?? 'aura123');
 }
 
 type Tab = 'security' | 'website' | 'notifications';
@@ -105,11 +110,11 @@ function SecurityTab({
 
     setSaving(true);
 
-    // Hash the current password and verify against the stored hash
-    const currentHash = await hashPassword(current);
-    // The correct hash is either in sessionStorage (if set previously) or
-    // falls back to hashing 'aura123' as the factory default.
-    const storedHash = getStoredHash() || (await hashPassword('aura123'));
+    // Hash the current password and verify against env / sessionStorage hash
+    const [currentHash, storedHash] = await Promise.all([
+      hashPassword(current),
+      getBaselineHash(),
+    ]);
 
     if (currentHash !== storedHash) {
       toast('Current password is incorrect', 'error');
@@ -120,13 +125,6 @@ function SecurityTab({
     // Hash and store the new password
     const newHash = await hashPassword(newPass);
     sessionStorage.setItem(PASS_HASH_KEY, newHash);
-
-    // Also update the session so it doesn't expire immediately
-    const session = sessionStorage.getItem(SESSION_KEY);
-    if (session) {
-      const parsed = JSON.parse(session);
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...parsed }));
-    }
 
     setSaving(false);
     toast('Password updated — takes effect on next login');

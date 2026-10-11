@@ -18,15 +18,18 @@ async function hashPassword(password: string): Promise<string> {
 }
 
 // The password hash can be overridden in sessionStorage by the Settings page.
-// Falls back to the factory default 'aura123'.
+// Falls back to VITE_ADMIN_PASSWORD env var, then to factory default 'aura123'.
 const PASS_HASH_KEY = 'aura_admin_pass_hash';
+const ENV_PASSWORD = import.meta.env.VITE_ADMIN_PASSWORD as string | undefined;
 
 let defaultHashPromise: Promise<string> | null = null;
 function getCorrectHash(): Promise<string> {
+  // 1. Check if admin changed the password this session via Settings page
   const stored = sessionStorage.getItem(PASS_HASH_KEY);
   if (stored) return Promise.resolve(stored);
+  // 2. Use VITE_ADMIN_PASSWORD from .env
   if (!defaultHashPromise) {
-    defaultHashPromise = hashPassword('aura123');
+    defaultHashPromise = hashPassword(ENV_PASSWORD ?? 'aura123');
   }
   return defaultHashPromise;
 }
