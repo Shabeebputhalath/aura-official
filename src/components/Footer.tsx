@@ -1,110 +1,134 @@
-import { Instagram, Youtube, Linkedin, Twitter, Mail, MapPin } from 'lucide-react';
+import { Instagram, Youtube, Linkedin, Twitter } from 'lucide-react';
 
-const footerLinks = [
-  { label: 'Work', href: '#/work' },
-  { label: 'Services', href: '#/services' },
-  { label: 'Process', href: '#process' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'About', href: '#/about' },
-  { label: 'Contact', href: '#/contact' },
+const cols = [
+  {
+    heading: 'Company',
+    links: [
+      { label: 'About Us',   href: '#/about' },
+      { label: 'Careers',    href: '#careers' },
+      { label: 'FAQs',       href: '#faqs' },
+      { label: 'Contact',    href: '#contact' },
+    ],
+  },
+  {
+    heading: 'Services',
+    links: [
+      { label: 'AI Commercials', href: '#/services' },
+      { label: 'Brand Films',    href: '#/services' },
+      { label: 'Product Videos', href: '#/services' },
+      { label: 'Social Content', href: '#/services' },
+    ],
+  },
+  {
+    heading: 'Resources',
+    links: [
+      { label: 'Blog',         href: '#blog' },
+      { label: 'Newsletter',   href: '#newsletter' },
+      { label: 'Case Studies', href: '#/work' },
+      { label: 'White Paper',  href: '#whitepaper' },
+    ],
+  },
+  {
+    heading: 'Legal',
+    links: [
+      { label: 'Privacy',           href: '#privacy' },
+      { label: 'Security',          href: '#security' },
+      { label: 'Terms of Use',      href: '#terms' },
+      { label: 'Acceptance Policy', href: '#policy' },
+      { label: 'Cookies',           href: '#cookies' },
+    ],
+  },
+  {
+    heading: 'Contact',
+    links: [
+      { label: 'hello@auraai.studio',  href: 'mailto:hello@auraai.studio' },
+      { label: '+91 000 000 0000',     href: 'tel:+910000000000' },
+      { label: 'Remote · Worldwide',   href: '#' },
+    ],
+  },
 ];
 
-const socialLinks = [
-  { icon: Instagram, label: 'Instagram', href: '#' },
-  { icon: Youtube, label: 'YouTube', href: '#' },
-  { icon: Linkedin, label: 'LinkedIn', href: '#' },
-  { icon: Twitter, label: 'X', href: '#' },
+const socials = [
+  { Icon: Linkedin,  label: 'LinkedIn',  href: '#' },
+  { Icon: Twitter,   label: 'X',         href: '#' },
+  { Icon: Instagram, label: 'Instagram', href: '#' },
+  { Icon: Youtube,   label: 'YouTube',   href: '#' },
 ];
 
 export default function Footer() {
   return (
-    <footer className="relative border-t border-white/[0.06] bg-ink-950">
-      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-10 lg:py-20">
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-4">
-          {/* Brand */}
-          <div className="lg:col-span-2">
-            <a href="#" className="group flex items-center gap-2.5">
-              <div className="relative flex h-8 w-8 items-center justify-center">
-                <div className="absolute inset-0 rounded-full bg-gradient-to-br from-accent-400 to-accent-700 opacity-80" />
-                <div className="absolute inset-[2px] rounded-full bg-ink-950" />
-                <div className="relative h-2 w-2 rounded-full bg-accent-400 shadow-[0_0_12px_rgba(124,92,255,0.8)]" />
-              </div>
-              <span className="font-display text-lg font-semibold tracking-tight text-white">
-                AURA<span className="text-accent-400"> AI</span>
-              </span>
-            </a>
-            <p className="mt-5 max-w-sm text-sm leading-relaxed text-ink-300">
-              AI-powered cinematic production for brands, creators, and ambitious
-              ideas.
-            </p>
+    <footer className="relative overflow-hidden bg-ink-950">
 
-            {/* Social */}
-            <div className="mt-6 flex gap-3">
-              {socialLinks.map((social) => {
-                const Icon = social.icon;
-                return (
-                  <a
-                    key={social.label}
-                    href={social.href}
-                    aria-label={social.label}
-                    className="flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 bg-white/[0.02] text-ink-300 transition-all duration-300 hover:border-accent-500/30 hover:bg-accent-500/10 hover:text-accent-400"
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                );
-              })}
+      {/* ── 5-column link grid ────────────────────────────────── */}
+      <div className="relative z-10 mx-auto max-w-7xl px-8 pt-16 sm:px-12 lg:px-16 lg:pt-20">
+        <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
+          {cols.map(col => (
+            <div key={col.heading}>
+              {/* Column heading */}
+              <h4 className="mb-5 text-[15px] font-semibold text-white">
+                {col.heading}
+              </h4>
+              {/* Links */}
+              <ul className="space-y-3.5">
+                {col.links.map(link => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      className="text-[14px] text-ink-300 transition-colors duration-200 hover:text-white"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-
-          {/* Links */}
-          <div>
-            <h4 className="text-xs font-medium uppercase tracking-[0.2em] text-ink-400">
-              Navigation
-            </h4>
-            <ul className="mt-5 space-y-3">
-              {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-ink-200 transition-colors duration-300 hover:text-white"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Contact */}
-          <div>
-            <h4 className="text-xs font-medium uppercase tracking-[0.2em] text-ink-400">
-              Contact
-            </h4>
-            <ul className="mt-5 space-y-4">
-              <li className="flex items-center gap-3 text-sm text-ink-200">
-                <Mail className="h-4 w-4 text-ink-400" />
-                <span>hello@auraai.studio</span>
-              </li>
-              <li className="flex items-center gap-3 text-sm text-ink-200">
-                <MapPin className="h-4 w-4 text-ink-400" />
-                <span>Remote · Worldwide</span>
-              </li>
-            </ul>
-          </div>
+          ))}
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-16 flex flex-col items-center justify-between gap-4 border-t border-white/[0.06] pt-8 sm:flex-row">
-          <p className="text-xs text-ink-400">© 2026 AURA AI. All rights reserved.</p>
-          <div className="flex gap-6">
-            <a href="#" className="text-xs text-ink-400 transition-colors duration-300 hover:text-white">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-xs text-ink-400 transition-colors duration-300 hover:text-white">
-              Terms
-            </a>
+        {/* ── Divider ─────────────────────────────────────────── */}
+        <div className="mt-14 border-t border-white/[0.08]" />
+
+        {/* ── Bottom bar ──────────────────────────────────────── */}
+        <div className="flex flex-col gap-5 py-8 sm:flex-row sm:items-start sm:justify-between">
+
+          {/* Left — address + copyright */}
+          <div className="space-y-1.5">
+            <p className="text-[14px] leading-relaxed text-ink-200">
+              AURA AI Studio · Kerala, India · Remote · Worldwide.
+            </p>
+            <p className="text-[13px] text-ink-400">
+              © 2026 AURA AI. All rights reserved.
+            </p>
+          </div>
+
+          {/* Right — social icon circles */}
+          <div className="flex items-center gap-2.5">
+            {socials.map(({ Icon, label, href }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                className="flex h-9 w-9 items-center justify-center rounded-full border border-white/[0.1] bg-white/[0.04] text-ink-300 transition-all duration-200 hover:border-accent-500/40 hover:bg-accent-500/10 hover:text-accent-400"
+              >
+                <Icon className="h-4 w-4" />
+              </a>
+            ))}
           </div>
         </div>
+      </div>
+
+      {/* ── Giant watermark ─────────────────────────────────── */}
+      <div
+        aria-hidden="true"
+        className="relative z-0 select-none overflow-hidden text-center font-display font-bold leading-none tracking-tight text-white/[0.04]"
+        style={{
+          fontSize:     'clamp(5rem, 17vw, 15rem)',
+          marginTop:    '-0.05em',
+          paddingBottom:'0.05em',
+          letterSpacing:'-0.02em',
+        }}
+      >
+        AURA AI
       </div>
     </footer>
   );
