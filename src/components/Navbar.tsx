@@ -54,9 +54,9 @@ export default function Navbar({
               <li key={link.label}>
                 <button
                   onClick={() => link.fn?.()}
-                  className={`rounded-full px-4 py-1.5 text-[13px] font-medium transition-all duration-200 ${
+                  className={` px-4 py-1.5 text-[13px] font-medium transition-all duration-200 ${
                     link.active
-                      ? 'bg-white/15 text-white'
+                      ? ' text-white'
                       : 'text-white/60 hover:bg-white/10 hover:text-white'
                   }`}
                 >

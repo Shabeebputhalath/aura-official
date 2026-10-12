@@ -1,19 +1,41 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useReveal } from '@/hooks/useReveal';
 import { supabase, type Capability } from '@/lib/supabase';
 import { capabilities as staticCaps } from '@/data/content';
 
-// Fallback static data (image-only, no video)
+/* ── Fallback static data ─────────────────────────────────────────────────── */
 const fallback: Capability[] = staticCaps.map((c, i) => ({
   id: String(i),
   label: c.label,
   image_url: c.image,
   video_url: null,
+  embed_code: null,
   sort_order: i + 1,
   is_active: true,
   created_at: '',
   updated_at: '',
 }));
+
+/* ── Extract & enhance src from a Pinterest <iframe> embed code ───────────── */
+function buildPinterestSrc(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+
+  let src = '';
+  const match = trimmed.match(/src=["']([^"']+)["']/i);
+  if (match) src = match[1];
+  else if (trimmed.startsWith('http')) src = trimmed;
+  else return null;
+
+  // Append autoplay=1 so Pinterest plays the video automatically
+  try {
+    const url = new URL(src);
+    url.searchParams.set('autoplay', '1');
+    return url.toString();
+  } catch {
+    return src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+  }
+}
 
 export default function Capabilities() {
   const { ref, visible } = useReveal();
@@ -50,7 +72,7 @@ export default function Capabilities() {
         </div>
       </div>
 
-      {/* Infinite scroll gallery */}
+      {/* ── Infinite scroll gallery ──────────────────────────────── */}
       <div className="relative mask-fade-x">
         <div className="flex gap-4 animate-scroll-x" style={{ width: 'max-content' }}>
           {doubled.map((cap, i) => (
@@ -62,84 +84,65 @@ export default function Capabilities() {
   );
 }
 
-/* ── Single reel card ──────────────────────────────────────────────────────── */
+/* ── Single reel card ─────────────────────────────────────────────────────── */
 function ReelCard({ cap }: { cap: Capability }) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [hovered, setHovered] = useState(false);
-  const [videoReady, setVideoReady] = useState(false);
-
-  const hasVideo = Boolean(cap.video_url);
-
-  function handleMouseEnter() {
-    setHovered(true);
-    if (hasVideo && videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.play().catch(() => {/* autoplay blocked — silent */});
-    }
-  }
-
-  function handleMouseLeave() {
-    setHovered(false);
-    if (hasVideo && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  }
+  const embedSrc    = cap.embed_code ? buildPinterestSrc(cap.embed_code) : null;
+  const hasEmbed    = Boolean(embedSrc);
+  const hasVideo    = Boolean(cap.video_url) && !hasEmbed;
+  const hasFallback = !hasEmbed && !hasVideo;
 
   return (
     <div
-      className="group relative w-52 shrink-0 overflow-hidden border border-white/[0.06] sm:w-60 cursor-pointer"
+      className="group relative w-52 shrink-0 overflow-hidden border border-white/[0.06] sm:w-60"
       style={{ aspectRatio: '9 / 16' }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
     >
-      {/* ── Poster image (always rendered, fades out when video plays) ── */}
-      <img
-        src={cap.image_url}
-        alt={cap.label}
-        className="absolute inset-0 h-full w-full object-cover transition-all duration-500"
-        style={{
-          opacity: hasVideo && hovered && videoReady ? 0 : 1,
-          transform: !hasVideo && hovered ? 'scale(1.08)' : 'scale(1)',
-        }}
-        loading="lazy"
-      />
+      {/* ── Pinterest embed — autoplay, pointer-events none so scroll works ── */}
+      {hasEmbed && (
+        <iframe
+          src={embedSrc!}
+          title={cap.label}
+          frameBorder="0"
+          scrolling="no"
+          allow="autoplay; fullscreen; encrypted-media"
+          allowFullScreen
+          loading="lazy"
+          className="absolute inset-0 h-full w-full"
+          style={{
+            width: '100%',
+            height: '100%',
+            border: 0,
+            pointerEvents: 'none',   // never block the horizontal scroll
+          }}
+        />
+      )}
 
-      {/* ── Video (only rendered if video_url exists) ── */}
+      {/* ── Video (mp4) — autoplays always ── */}
       {hasVideo && (
         <video
-          ref={videoRef}
           src={cap.video_url!}
-          poster={cap.image_url || undefined}
           muted
           loop
           playsInline
-          preload="none"
-          onCanPlay={() => setVideoReady(true)}
-          className="absolute inset-0 h-full w-full object-cover transition-opacity duration-500"
-          style={{ opacity: hovered && videoReady ? 1 : 0 }}
+          autoPlay
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+      )}
+
+      {/* ── Fallback: static image ── */}
+      {hasFallback && (
+        <img
+          src={cap.image_url}
+          alt={cap.label}
+          className="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loading="lazy"
         />
       )}
 
       {/* ── Gradient overlay ── */}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/10 to-transparent" />
-
-      {/* ── Play indicator pill — shown on hover for video cards ── */}
-      {hasVideo && (
-        <div
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 transition-all duration-300"
-          style={{ opacity: hovered ? 0 : 1, transform: hovered ? 'translate(-50%,-50%) scale(0.8)' : 'translate(-50%,-50%) scale(1)' }}
-        >
-          <div className="flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-black/40 backdrop-blur-md">
-            <svg className="h-4 w-4 translate-x-px fill-white text-white" viewBox="0 0 16 16">
-              <path d="M5 3.5l8 4.5-8 4.5V3.5z" />
-            </svg>
-          </div>
-        </div>
-      )}
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink-950 via-ink-950/5 to-transparent" />
 
       {/* ── Label ── */}
-      <div className="absolute bottom-0 left-0 right-0 p-4">
+      <div className="pointer-events-none absolute bottom-0 left-0 right-0 p-4">
         <span className="font-display text-sm font-semibold tracking-tight text-white drop-shadow-sm">
           {cap.label}
         </span>

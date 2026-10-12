@@ -13,5 +13,9 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
+  server: {
+    // Serve index.html for /admin so the SPA handles it
+    historyApiFallback: true,
+  },
 });
 

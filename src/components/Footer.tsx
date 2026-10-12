@@ -4,10 +4,10 @@ const cols = [
   {
     heading: 'Company',
     links: [
-      { label: 'About Us',   href: '#/about' },
-      { label: 'Careers',    href: '#careers' },
-      { label: 'FAQs',       href: '#faqs' },
-      { label: 'Contact',    href: '#contact' },
+      { label: 'About Us',  href: '#/about' },
+      { label: 'Careers',   href: '#careers' },
+      { label: 'FAQs',      href: '#faqs' },
+      { label: 'Contact',   href: '#contact' },
     ],
   },
   {
@@ -41,9 +41,9 @@ const cols = [
   {
     heading: 'Contact',
     links: [
-      { label: 'hello@auraai.studio',  href: 'mailto:hello@auraai.studio' },
-      { label: '+91 000 000 0000',     href: 'tel:+910000000000' },
-      { label: 'Remote · Worldwide',   href: '#' },
+      { label: 'hello@auraai.studio', href: 'mailto:hello@auraai.studio' },
+      { label: '+91 000 000 0000',    href: 'tel:+910000000000' },
+      { label: 'Remote · Worldwide',  href: '#' },
     ],
   },
 ];
@@ -59,16 +59,50 @@ export default function Footer() {
   return (
     <footer className="relative overflow-hidden bg-ink-950">
 
-      {/* ── 5-column link grid ────────────────────────────────── */}
+      {/* ── Purple shadow glows ───────────────────────────────────
+          Two layered radial blooms using the site accent palette.
+          Positioned behind everything (z-0) near the watermark.   */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-0 z-0">
+        {/* Primary large bloom — centre-bottom */}
+        <div
+          className="absolute"
+          style={{
+            bottom:  '-10%',
+            left:    '50%',
+            transform: 'translateX(-50%)',
+            width:   '900px',
+            height:  '500px',
+            borderRadius: '50%',
+            background:
+              'radial-gradient(ellipse at center, rgba(107,76,245,0.28) 0%, rgba(124,92,255,0.12) 45%, transparent 75%)',
+            filter: 'blur(40px)',
+          }}
+        />
+        {/* Secondary tighter bloom — slightly left */}
+        <div
+          className="absolute"
+          style={{
+            bottom:  '-5%',
+            left:    '38%',
+            transform: 'translateX(-50%)',
+            width:   '500px',
+            height:  '300px',
+            borderRadius: '50%',
+            background:
+              'radial-gradient(ellipse at center, rgba(143,125,255,0.22) 0%, rgba(107,76,245,0.08) 60%, transparent 80%)',
+            filter: 'blur(60px)',
+          }}
+        />
+      </div>
+
+      {/* ── 5-column link grid ────────────────────────────────────── */}
       <div className="relative z-10 mx-auto max-w-7xl px-8 pt-16 sm:px-12 lg:px-16 lg:pt-20">
         <div className="grid grid-cols-2 gap-x-8 gap-y-12 sm:grid-cols-3 lg:grid-cols-5">
           {cols.map(col => (
             <div key={col.heading}>
-              {/* Column heading */}
               <h4 className="mb-5 text-[15px] font-semibold text-white">
                 {col.heading}
               </h4>
-              {/* Links */}
               <ul className="space-y-3.5">
                 {col.links.map(link => (
                   <li key={link.label}>
@@ -85,13 +119,11 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* ── Divider ─────────────────────────────────────────── */}
+        {/* ── Divider ──────────────────────────────────────────────── */}
         <div className="mt-14 border-t border-white/[0.08]" />
 
-        {/* ── Bottom bar ──────────────────────────────────────── */}
+        {/* ── Bottom bar ───────────────────────────────────────────── */}
         <div className="flex flex-col gap-5 py-8 sm:flex-row sm:items-start sm:justify-between">
-
-          {/* Left — address + copyright */}
           <div className="space-y-1.5">
             <p className="text-[14px] leading-relaxed text-ink-200">
               AURA AI Studio · Kerala, India · Remote · Worldwide.
@@ -101,7 +133,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Right — social icon circles */}
           <div className="flex items-center gap-2.5">
             {socials.map(({ Icon, label, href }) => (
               <a
@@ -117,15 +148,22 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* ── Giant watermark ─────────────────────────────────── */}
+      {/* ── Giant watermark ──────────────────────────────────────────
+          Clipped at the bottom exactly like the reference image.
+          Uses a subtle accent purple tint to catch the glow.        */}
       <div
         aria-hidden="true"
-        className="relative z-0 select-none overflow-hidden text-center font-display font-bold leading-none tracking-tight text-white/[0.04]"
+        className="relative z-[1] select-none overflow-hidden whitespace-nowrap text-center font-display font-bold leading-none tracking-tight"
         style={{
-          fontSize:     'clamp(5rem, 17vw, 15rem)',
-          marginTop:    '-0.05em',
-          paddingBottom:'0.05em',
-          letterSpacing:'-0.02em',
+          fontSize:      'clamp(5.5rem, 19vw, 17rem)',
+          letterSpacing: '-0.03em',
+          /* Accent-tinted near-transparent so it picks up the glow */
+          color:         'rgba(124,92,255,0.13)',
+          /* Crop the bottom half — same treatment as reference */
+          maxHeight:     '0.55em',
+          overflow:      'hidden',
+          marginTop:     '0.1em',
+          paddingBottom: '0.6em',
         }}
       >
         AURA AI
