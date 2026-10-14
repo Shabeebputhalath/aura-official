@@ -54,15 +54,40 @@ export default function WhyAIHuman() {
   const { ref, visible } = useReveal();
 
   return (
-    <section className="relative py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-10">
-        <div className="grid grid-cols-1 gap-16 lg:grid-cols-2 lg:gap-20">
+    <section className="relative py-16 lg:py-24" style={{ background: '#050507' }}>
+      <div className="relative z-10 mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-8">
+
+        {/* ── Rounded card with bg.png as background ─────────── */}
+        <div
+          className="relative overflow-hidden"
+          style={{
+            borderRadius: '1.5rem',
+            border:       '1px solid rgba(124,92,255,0.15)',
+            boxShadow:    '0 0 60px rgba(124,92,255,0.08)',
+          }}
+        >
+          {/* bg.png fills the card */}
+          <div className="absolute inset-0">
+            <img
+              src="/bg.png"
+              alt=""
+              aria-hidden="true"
+              className="h-full w-full object-cover object-center"
+              style={{ opacity: 0.9 }}
+              draggable={false}
+            />
+            {/* Subtle dark scrim so text stays readable */}
+            <div className="absolute inset-0 bg-ink-950/40" />
+          </div>
+
+          {/* Content sits on top of the bg image */}
+          <div className="relative z-10 grid grid-cols-1 gap-16 p-8 sm:p-12 lg:grid-cols-2 lg:gap-20 lg:p-16">
           {/* Left: cinematic visual */}
           <div ref={ref} className={`reveal-scale relative ${visible ? 'reveal-visible' : ''}`}>
             <div className="relative aspect-[4/5] overflow-hidden border border-white/[0.06]">
               <img
-                src="https://images.pexels.com/photos/13812458/pexels-photo-13812458.jpeg?auto=compress&cs=tinysrgb&w=900"
-                alt="Cinematic AI production"
+                src="/aura.png"
+                alt="AURA AI studio"
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
@@ -136,8 +161,9 @@ export default function WhyAIHuman() {
               ))}
             </div>
           </div>
-        </div>
-      </div>
+          </div>{/* end content z-10 */}
+        </div>{/* end rounded card */}
+      </div>{/* end max-w-7xl */}
     </section>
   );
 }

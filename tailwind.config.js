@@ -39,8 +39,8 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Sansation"', 'sans-serif'],
-        body:    ['"Sansation"', 'sans-serif'],
+        display: ['"Figtree"', 'sans-serif'],
+        body:    ['"Figtree"', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.8s ease-out forwards',

@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import TrustSection from '@/components/TrustSection';
-import WorkShowcase from '@/components/WorkShowcase';
 import Services from '@/components/Services';
 import WhyAIHuman from '@/components/WhyAIHuman';
 import Process from '@/components/Process';
@@ -213,7 +212,6 @@ function App() {
           <TrustSection />
           <About />
           <Capabilities />
-          <WorkShowcase onNavigateWork={() => navigate('work')} />
           <Services />
           <WhyAIHuman />
           <Process />

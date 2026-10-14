@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Figtree:ital,wght@0,300..900;1,300..900&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -17,7 +17,8 @@
 
   body {
     @apply bg-ink-950 text-ink-50 font-body;
-    font-family: 'Sansation', sans-serif;
+    font-family: 'Figtree', sans-serif;
+    font-optical-sizing: auto;
     overflow-x: hidden;
   }
 

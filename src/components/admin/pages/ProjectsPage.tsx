@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, Star, Eye, EyeOff, ArrowUp, ArrowDown, Film, Code } from 'lucide-react';
+import { Plus, Pencil, Trash2, Star, Eye, EyeOff, ArrowUp, ArrowDown, Film, Code, X } from 'lucide-react';
 import { supabase, type Project } from '@/lib/supabase';
 import { Card } from '@/components/admin/Card';
 import { Button } from '@/components/admin/Button';
@@ -10,12 +10,24 @@ import { Input, Textarea, Toggle } from '@/components/admin/FormFields';
 import { PageHeader, EmptyState, LoadingSpinner } from '@/components/admin/PageStates';
 import { useToast } from '@/components/admin/Toast';
 
-/* Pull src from a Pinterest <iframe> embed string */
-function extractSrc(raw: string): string | null {
-  const m = raw.trim().match(/src=["']([^"']+)["']/i);
-  if (m) return m[1];
-  if (raw.trim().startsWith('http')) return raw.trim();
-  return null;
+/* ── Extract src + inject autoplay=1 from Pinterest embed code ────────────── */
+function buildPinterestSrc(raw: string): string | null {
+  const trimmed = raw.trim();
+  if (!trimmed) return null;
+
+  let src = '';
+  const match = trimmed.match(/src=["']([^"']+)["']/i);
+  if (match) src = match[1];
+  else if (trimmed.startsWith('http')) src = trimmed;
+  else return null;
+
+  try {
+    const url = new URL(src);
+    url.searchParams.set('autoplay', '1');
+    return url.toString();
+  } catch {
+    return src + (src.includes('?') ? '&' : '?') + 'autoplay=1';
+  }
 }
 
 const emptyForm = {
@@ -62,9 +74,11 @@ export function ProjectsPage() {
     setSaving(true);
     const payload = {
       title: form.title, client: form.client, category: form.category,
-      description: form.description, image_url: form.image_url,
+      description: form.description,
+      // If embed code is set, image_url is not needed
+      image_url:   form.embed_code.trim() ? '' : form.image_url,
       project_url: form.project_url,
-      embed_code: form.embed_code.trim() || null,
+      embed_code:  form.embed_code.trim() || null,
       featured: form.featured, published: form.published,
     };
     if (editId) {
@@ -82,9 +96,7 @@ export function ProjectsPage() {
       if (error) { toast('Failed to create project', 'error'); setSaving(false); return; }
       toast('Project created');
     }
-    setSaving(false);
-    setModalOpen(false);
-    load();
+    setSaving(false); setModalOpen(false); load();
   }
 
   async function toggleField(p: Project, field: 'featured' | 'published') {
@@ -113,12 +125,11 @@ export function ProjectsPage() {
     if (!deleteId) return;
     const { error } = await supabase.from('projects').delete().eq('id', deleteId);
     if (error) { toast('Delete failed', 'error'); return; }
-    toast('Project deleted');
-    setDeleteId(null);
-    load();
+    toast('Project deleted'); setDeleteId(null); load();
   }
 
-  const previewSrc = form.embed_code ? extractSrc(form.embed_code) : null;
+  /* Derive live preview src immediately when embed code is pasted */
+  const previewSrc = form.embed_code.trim() ? buildPinterestSrc(form.embed_code) : null;
 
   if (loading) return <LoadingSpinner />;
 
@@ -160,18 +171,15 @@ export function ProjectsPage() {
                   </button>
                 </div>
 
-                {/* Thumbnail or embed indicator */}
+                {/* Thumbnail / embed badge */}
                 {p.embed_code ? (
-                  <div className="flex h-16 w-24 shrink-0 items-center justify-center rounded-lg border border-accent-500/20 bg-accent-500/10">
+                  <div className="flex h-16 w-24 shrink-0 flex-col items-center justify-center gap-1 rounded-lg border border-accent-500/20 bg-accent-500/10">
                     <Code className="h-5 w-5 text-accent-400" />
+                    <span className="text-[9px] font-medium text-accent-300 uppercase tracking-wide">Pinterest</span>
                   </div>
                 ) : (
-                  <img
-                    src={p.image_url}
-                    alt=""
-                    className="h-16 w-24 shrink-0 rounded-lg object-cover"
-                    onError={e => { (e.target as HTMLImageElement).style.opacity = '0.3'; }}
-                  />
+                  <img src={p.image_url} alt="" className="h-16 w-24 shrink-0 rounded-lg object-cover"
+                    onError={e => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
                 )}
 
                 {/* Info */}
@@ -192,9 +200,7 @@ export function ProjectsPage() {
                 <div className="flex shrink-0 gap-2">
                   <button onClick={() => toggleField(p, 'featured')}
                     className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${p.featured ? 'border-accent-500/30 bg-accent-500/10 text-accent-400' : 'border-white/10 text-ink-400 hover:text-white'}`}
-                    title="Toggle featured">
-                    <Star className="h-4 w-4" />
-                  </button>
+                    title="Toggle featured"><Star className="h-4 w-4" /></button>
                   <button onClick={() => toggleField(p, 'published')}
                     className={`flex h-9 w-9 items-center justify-center rounded-lg border transition-colors ${p.published ? 'border-emerald-500/20 bg-emerald-500/10 text-emerald-300' : 'border-white/10 text-ink-400 hover:text-white'}`}
                     title="Toggle published">
@@ -233,60 +239,107 @@ export function ProjectsPage() {
               onChange={e => setForm(f => ({ ...f, project_url: e.target.value }))} placeholder="https://..." />
           </div>
 
-          <Input label="Thumbnail / Image URL" value={form.image_url}
-            onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))}
-            placeholder="https://images.pexels.com/..." />
-
-          {/* Image preview */}
-          {form.image_url && !form.embed_code && (
-            <div className="overflow-hidden rounded-lg border border-white/10">
-              <img src={form.image_url} alt="Preview" className="h-40 w-full object-cover" />
-            </div>
-          )}
-
-          {/* ── Pinterest embed code ── */}
+          {/* ── Pinterest embed code — PRIMARY ── */}
           <div>
             <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
               <Code className="h-3.5 w-3.5 text-accent-400" />
               Pinterest Embed Code
               <span className="ml-1 rounded bg-accent-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-accent-300 uppercase tracking-wide">
-                Optional
+                Recommended
               </span>
             </label>
             <textarea
               rows={3}
               value={form.embed_code}
               onChange={e => setForm(f => ({ ...f, embed_code: e.target.value }))}
-              placeholder={`<iframe src="https://assets.pinterest.com/ext/embed.html?id=…" height="900" width="450" frameborder="0" scrolling="no"></iframe>`}
+              placeholder={`<iframe src="https://assets.pinterest.com/ext/embed.html?id=1066368018038878527" height="900" width="450" frameborder="0" scrolling="no"></iframe>`}
               className="w-full resize-none rounded-lg border border-white/10 bg-ink-950/50 px-4 py-3 font-mono text-xs text-white placeholder:text-ink-600 focus:border-accent-500/40 focus:outline-none"
             />
             <p className="mt-1.5 text-xs text-ink-500">
-              Paste the Pinterest <code className="text-ink-300">&lt;iframe&gt;</code> embed code. When set, the project card will show the Pinterest video instead of the image.
+              Paste Pinterest <code className="text-ink-300">&lt;iframe&gt;</code> embed code. The video plays automatically — no thumbnail needed.
             </p>
           </div>
 
-          {/* Live Pinterest preview */}
+          {/* ── LIVE VIDEO PREVIEW — full-size, shown immediately ── */}
           {previewSrc && (
-            <div className="flex items-start gap-4">
-              <div className="relative shrink-0 overflow-hidden rounded-xl border border-white/[0.06] bg-ink-900"
-                style={{ width: 90, aspectRatio: '9/16' }}>
-                <iframe
-                  src={previewSrc}
-                  title="Preview"
-                  frameBorder="0"
-                  scrolling="no"
-                  allow="autoplay"
-                  className="h-full w-full"
-                  style={{ width: '100%', height: '100%', border: 0 }}
-                />
+            <div className="rounded-xl border border-accent-500/20 bg-ink-900 overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.06]">
+                <div className="flex items-center gap-2">
+                  <span className="h-2 w-2 rounded-full bg-accent-400 shadow-[0_0_6px_rgba(124,92,255,0.8)]" />
+                  <span className="text-xs font-medium text-accent-300">Live Pinterest Preview — playing now</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setForm(f => ({ ...f, embed_code: '' }))}
+                  className="flex h-6 w-6 items-center justify-center rounded-full text-ink-400 hover:bg-white/10 hover:text-white transition-colors"
+                  title="Clear embed code"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
               </div>
-              <div className="mt-1 space-y-1">
-                <p className="flex items-center gap-1.5 text-xs font-medium text-white">
-                  <Code className="h-3 w-3 text-accent-400" /> Pinterest preview
-                </p>
-                <p className="text-xs text-ink-400">Renders in the project card</p>
+
+              {/* Pinterest iframe — proportional 9:16, large enough to see the video */}
+              <div className="flex items-start justify-center gap-6 p-4">
+                <div
+                  className="relative overflow-hidden rounded-xl border border-white/[0.08] bg-black flex-shrink-0"
+                  style={{ width: 220, aspectRatio: '9/16' }}
+                >
+                  <iframe
+                    key={previewSrc}          /* remount when src changes */
+                    src={previewSrc}
+                    title="Pinterest preview"
+                    frameBorder="0"
+                    scrolling="no"
+                    allow="autoplay; fullscreen; encrypted-media"
+                    allowFullScreen
+                    style={{ width: '100%', height: '100%', border: 0, display: 'block' }}
+                  />
+                  {/* Label overlay */}
+                  <div className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-3 pt-6">
+                    <p className="text-[11px] font-semibold text-white truncate">
+                      {form.title || 'Project title'}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Info panel beside the preview */}
+                <div className="flex flex-col gap-3 pt-1">
+                  <div className="rounded-lg border border-emerald-500/20 bg-emerald-500/[0.06] px-3 py-2">
+                    <p className="text-xs font-medium text-emerald-300">✓ Video detected</p>
+                    <p className="mt-0.5 text-xs text-ink-400">Autoplays on the website</p>
+                  </div>
+                  <div className="space-y-1 text-xs text-ink-500">
+                    <p>• No thumbnail required</p>
+                    <p>• Renders at 9:16 ratio</p>
+                    <p>• Starts from the beginning</p>
+                  </div>
+                </div>
               </div>
             </div>
+          )}
+
+          {/* ── Image URL — only shown when NO embed code ── */}
+          {!form.embed_code.trim() && (
+            <>
+              <div className="flex items-center gap-3">
+                <div className="flex-1 border-t border-white/[0.06]" />
+                <span className="text-xs text-ink-500">or use image thumbnail</span>
+                <div className="flex-1 border-t border-white/[0.06]" />
+              </div>
+              <Input
+                label="Thumbnail / Image URL"
+                value={form.image_url}
+                onChange={e => setForm(f => ({ ...f, image_url: e.target.value }))}
+                placeholder="https://images.pexels.com/..."
+              />
+              {form.image_url && (
+                <div className="overflow-hidden rounded-lg border border-white/10">
+                  <img src={form.image_url} alt="Preview" className="h-40 w-full object-cover"
+                    onError={e => { (e.target as HTMLImageElement).style.opacity = '0.3'; }} />
+                </div>
+              )}
+            </>
           )}
 
           <Textarea label="Description" rows={3} value={form.description}

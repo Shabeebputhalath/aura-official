@@ -1,43 +1,141 @@
-import { ArrowUpRight } from 'lucide-react';
-
 export default function FinalCTA() {
   return (
-    <section className="relative flex min-h-[70vh] items-center overflow-hidden">
-      {/* Background */}
-      <div className="absolute inset-0">
-        <img
-          src="https://images.pexels.com/photos/18545013/pexels-photo-18545013.jpeg?auto=compress&cs=tinysrgb&w=1920"
-          alt=""
-          className="h-full w-full object-cover"
-          loading="lazy"
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-ink-950/80 via-ink-950/60 to-ink-950" />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink-950/70 to-transparent" />
-      </div>
+    <section
+      style={{
+        background: '#050507',
+        padding: 'clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2.5rem)',
+      }}
+    >
+      {/* ── Pill / banner container ─────────────────────────────── */}
+      <div
+        style={{
+          maxWidth:      '1280px',
+          margin:        '0 auto',
+          position:      'relative',
+          borderRadius:  '1rem',
+          overflow:      'hidden',
+          background:    '#0e0e14',
+          border:        '1px solid rgba(124,92,255,0.12)',
+          display:       'flex',
+          alignItems:    'center',
+          justifyContent:'space-between',
+          minHeight:     '160px',
+          /* Subtle inner accent glow left side */
+          boxShadow:     'inset 60px 0 80px rgba(124,92,255,0.06)',
+        }}
+      >
+        {/* ── Left: text + button ──────────────────────────────── */}
+        <div
+          style={{
+            padding:   'clamp(2rem, 4vw, 3rem) clamp(1.75rem, 4vw, 3rem)',
+            flex:      '1 1 0',
+            zIndex:    1,
+          }}
+        >
+          {/* Headline — two lines, accent colour on second line */}
+          <h2
+            style={{
+              fontFamily:    '"Figtree", sans-serif',
+              fontWeight:    700,
+              fontSize:      'clamp(1.5rem, 3.5vw, 2.5rem)',
+              lineHeight:    1.12,
+              letterSpacing: '-0.02em',
+              color:         '#ffffff',
+              margin:        0,
+            }}
+          >
+            Start Your AI Film
+            <br />
+            <span
+              style={{
+                background:          'linear-gradient(90deg,#a89aff 0%,#7c5cff 60%)',
+                WebkitBackgroundClip:'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip:      'text',
+              }}
+            >
+              Journey Today
+            </span>
+          </h2>
 
-      {/* Glow */}
-      <div className="pointer-events-none absolute inset-0">
-        <div className="absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent-600/15 blur-[120px] animate-pulse-slow" />
-      </div>
+          {/* Sub-copy */}
+          <p
+            style={{
+              fontFamily:  '"Figtree", sans-serif',
+              fontWeight:  400,
+              fontSize:    '13px',
+              lineHeight:  1.65,
+              color:       'rgba(255,255,255,0.45)',
+              marginTop:   '0.75rem',
+              maxWidth:    '38ch',
+            }}
+          >
+            Sign up now and experience the power of AI-driven cinematic
+            production without any commitment.
+          </p>
 
-      {/* Content */}
-      <div className="relative z-10 mx-auto w-full max-w-4xl px-6 py-24 text-center lg:px-10">
-        <h2 className="font-display text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-7xl">
-          Your Next Campaign
-          <br />
-          Could Look Like <span className="text-gradient-accent">This.</span>
-        </h2>
-        <p className="mx-auto mt-8 max-w-2xl text-lg text-ink-200 sm:text-xl">
-          Let's create something people haven't seen before.
-        </p>
-        <div className="mt-10 flex justify-center">
-          <a href="#contact" className="btn-primary group text-base">
-            <span>Start Your Project</span>
-            <ArrowUpRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          {/* CTA button */}
+          <a
+            href="#contact"
+            style={{
+              display:        'inline-flex',
+              alignItems:     'center',
+              marginTop:      '1.25rem',
+              borderRadius:   '0.5rem',
+              background:     '#7c5cff',
+              color:          '#ffffff',
+              fontFamily:     '"Figtree", sans-serif',
+              fontWeight:     600,
+              fontSize:       '13px',
+              padding:        '0.6rem 1.4rem',
+              textDecoration: 'none',
+              transition:     'background 0.2s, transform 0.2s',
+              boxShadow:      '0 4px 20px rgba(124,92,255,0.35)',
+            }}
+            onMouseEnter={e => {
+              (e.currentTarget).style.background = '#6b4cf5';
+              (e.currentTarget).style.transform  = 'translateY(-1px)';
+            }}
+            onMouseLeave={e => {
+              (e.currentTarget).style.background = '#7c5cff';
+              (e.currentTarget).style.transform  = 'translateY(0)';
+            }}
+          >
+            Get Started
           </a>
+        </div>
+
+        {/* ── Right: purple 3D object image ───────────────────── */}
+        <div
+          style={{
+            flexShrink:   0,
+            width:        'clamp(160px, 22vw, 280px)',
+            alignSelf:    'stretch',
+            position:     'relative',
+            overflow:     'hidden',
+          }}
+        >
+          <img
+            src="/purple.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              position:   'absolute',
+              right:      '-5%',
+              bottom:     '-5%',
+              width:      '115%',
+              height:     '115%',
+              objectFit:  'contain',
+              objectPosition: 'bottom right',
+              /* Slight glow to blend with the dark bg */
+              filter:     'drop-shadow(0 0 40px rgba(124,92,255,0.4))',
+              pointerEvents: 'none',
+              userSelect: 'none',
+            }}
+            draggable={false}
+          />
         </div>
       </div>
     </section>
   );
 }
-

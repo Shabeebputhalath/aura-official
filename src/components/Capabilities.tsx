@@ -59,7 +59,7 @@ export default function Capabilities() {
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div ref={ref} className="mb-16 max-w-3xl">
           <p className={`reveal section-label transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>
-            Creative Capabilities
+            Our Projects
           </p>
           <h2
             className={`reveal mt-6 font-display text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}
@@ -98,22 +98,30 @@ function ReelCard({ cap }: { cap: Capability }) {
     >
       {/* ── Pinterest embed — autoplay, pointer-events none so scroll works ── */}
       {hasEmbed && (
-        <iframe
-          src={embedSrc!}
-          title={cap.label}
-          frameBorder="0"
-          scrolling="no"
-          allow="autoplay; fullscreen; encrypted-media"
-          allowFullScreen
-          loading="lazy"
-          className="absolute inset-0 h-full w-full"
-          style={{
-            width: '100%',
-            height: '100%',
-            border: 0,
-            pointerEvents: 'none',   // never block the horizontal scroll
-          }}
-        />
+        <>
+          <iframe
+            src={embedSrc!}
+            title={cap.label}
+            frameBorder="0"
+            scrolling="no"
+            allow="autoplay; fullscreen; encrypted-media"
+            allowFullScreen
+            loading="lazy"
+            className="absolute inset-0 h-full w-full"
+            style={{
+              width: '100%',
+              height: '100%',
+              border: 0,
+              pointerEvents: 'none',
+            }}
+          />
+          {/* Transparent shield — blocks the Pinterest "Save" badge entirely */}
+          <div
+            className="absolute inset-0 z-10"
+            style={{ background: 'transparent', pointerEvents: 'all' }}
+            aria-hidden="true"
+          />
+        </>
       )}
 
       {/* ── Video (mp4) — autoplays always ── */}
