@@ -3,43 +3,57 @@ export default function FinalCTA() {
     <section
       style={{
         background: '#050507',
-        padding: 'clamp(2.5rem, 5vw, 4rem) clamp(1.25rem, 4vw, 2.5rem)',
+        padding: 'clamp(2rem, 4vw, 3.5rem) clamp(1.25rem, 4vw, 2.5rem)',
       }}
     >
-      {/* ── Pill / banner container ─────────────────────────────── */}
+      {/* ── Banner card ─────────────────────────────────────────── */}
       <div
         style={{
-          maxWidth:      '1280px',
-          margin:        '0 auto',
-          position:      'relative',
-          borderRadius:  '1rem',
-          overflow:      'hidden',
-          background:    '#0e0e14',
-          border:        '1px solid rgba(124,92,255,0.12)',
-          display:       'flex',
-          alignItems:    'center',
-          justifyContent:'space-between',
-          minHeight:     '160px',
-          /* Subtle inner accent glow left side */
-          boxShadow:     'inset 60px 0 80px rgba(124,92,255,0.06)',
+          maxWidth:       '1320px',
+          margin:         '0 auto',
+          position:       'relative',
+          borderRadius:   '1.25rem',
+          overflow:       'hidden',
+          background:     'linear-gradient(135deg, #0e0c1a 0%, #100e1e 60%, #0a0a12 100%)',
+          border:         '1px solid rgba(124,92,255,0.18)',
+          display:        'flex',
+          alignItems:     'center',
+          justifyContent: 'space-between',
+          minHeight:      'clamp(180px, 22vw, 260px)',
+          /* Purple glow — left and right */
+          boxShadow:      'inset 80px 0 120px rgba(124,92,255,0.08), inset -40px 0 80px rgba(124,92,255,0.05), 0 0 60px rgba(124,92,255,0.06)',
         }}
       >
+        {/* Subtle grid pattern overlay */}
+        <div
+          aria-hidden="true"
+          style={{
+            position:    'absolute',
+            inset:       0,
+            backgroundImage:
+              'linear-gradient(rgba(124,92,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(124,92,255,0.04) 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+            pointerEvents:  'none',
+          }}
+        />
+
         {/* ── Left: text + button ──────────────────────────────── */}
         <div
           style={{
-            padding:   'clamp(2rem, 4vw, 3rem) clamp(1.75rem, 4vw, 3rem)',
-            flex:      '1 1 0',
-            zIndex:    1,
+            padding:  'clamp(2rem, 4vw, 3.5rem) clamp(2rem, 4vw, 3.5rem)',
+            flex:     '1 1 0',
+            zIndex:   1,
+            minWidth: 0,
           }}
         >
-          {/* Headline — two lines, accent colour on second line */}
+          {/* Headline */}
           <h2
             style={{
               fontFamily:    '"Figtree", sans-serif',
               fontWeight:    700,
-              fontSize:      'clamp(1.5rem, 3.5vw, 2.5rem)',
-              lineHeight:    1.12,
-              letterSpacing: '-0.02em',
+              fontSize:      'clamp(1.75rem, 3.8vw, 3rem)',
+              lineHeight:    1.1,
+              letterSpacing: '-0.025em',
               color:         '#ffffff',
               margin:        0,
             }}
@@ -48,10 +62,10 @@ export default function FinalCTA() {
             <br />
             <span
               style={{
-                background:          'linear-gradient(90deg,#a89aff 0%,#7c5cff 60%)',
-                WebkitBackgroundClip:'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip:      'text',
+                background:           'linear-gradient(90deg, #a89aff 0%, #7c5cff 55%, #6b4cf5 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor:  'transparent',
+                backgroundClip:       'text',
               }}
             >
               Journey Today
@@ -61,13 +75,13 @@ export default function FinalCTA() {
           {/* Sub-copy */}
           <p
             style={{
-              fontFamily:  '"Figtree", sans-serif',
-              fontWeight:  400,
-              fontSize:    '13px',
-              lineHeight:  1.65,
-              color:       'rgba(255,255,255,0.45)',
-              marginTop:   '0.75rem',
-              maxWidth:    '38ch',
+              fontFamily: '"Figtree", sans-serif',
+              fontWeight: 400,
+              fontSize:   'clamp(13px, 1.2vw, 15px)',
+              lineHeight: 1.7,
+              color:      'rgba(255,255,255,0.48)',
+              marginTop:  '1rem',
+              maxWidth:   '42ch',
             }}
           >
             Sign up now and experience the power of AI-driven cinematic
@@ -80,59 +94,66 @@ export default function FinalCTA() {
             style={{
               display:        'inline-flex',
               alignItems:     'center',
-              marginTop:      '1.25rem',
-              borderRadius:   '0.5rem',
+              gap:            '0.5rem',
+              marginTop:      '1.5rem',
+              borderRadius:   '0.6rem',
               background:     '#7c5cff',
               color:          '#ffffff',
               fontFamily:     '"Figtree", sans-serif',
               fontWeight:     600,
-              fontSize:       '13px',
-              padding:        '0.6rem 1.4rem',
+              fontSize:       'clamp(13px, 1.1vw, 15px)',
+              padding:        'clamp(0.6rem, 1vw, 0.8rem) clamp(1.25rem, 2vw, 1.75rem)',
               textDecoration: 'none',
-              transition:     'background 0.2s, transform 0.2s',
-              boxShadow:      '0 4px 20px rgba(124,92,255,0.35)',
+              transition:     'background 0.2s, transform 0.2s, box-shadow 0.2s',
+              boxShadow:      '0 6px 28px rgba(124,92,255,0.4)',
             }}
             onMouseEnter={e => {
-              (e.currentTarget).style.background = '#6b4cf5';
-              (e.currentTarget).style.transform  = 'translateY(-1px)';
+              const el = e.currentTarget;
+              el.style.background  = '#6b4cf5';
+              el.style.transform   = 'translateY(-2px)';
+              el.style.boxShadow   = '0 10px 36px rgba(124,92,255,0.55)';
             }}
             onMouseLeave={e => {
-              (e.currentTarget).style.background = '#7c5cff';
-              (e.currentTarget).style.transform  = 'translateY(0)';
+              const el = e.currentTarget;
+              el.style.background  = '#7c5cff';
+              el.style.transform   = 'translateY(0)';
+              el.style.boxShadow   = '0 6px 28px rgba(124,92,255,0.4)';
             }}
           >
             Get Started
           </a>
         </div>
 
-        {/* ── Right: purple 3D object image ───────────────────── */}
+        {/* ── Right: purple 3D object ───────────────────────────── */}
         <div
           style={{
-            flexShrink:   0,
-            width:        'clamp(160px, 22vw, 280px)',
-            alignSelf:    'stretch',
-            position:     'relative',
-            overflow:     'hidden',
+            flexShrink: 0,
+            /* Width scales with viewport — much bigger than before */
+            width:      'clamp(220px, 30vw, 420px)',
+            alignSelf:  'stretch',
+            position:   'relative',
+            overflow:   'visible',
           }}
         >
           <img
             src="/purple.png"
             alt=""
             aria-hidden="true"
-            style={{
-              position:   'absolute',
-              right:      '-5%',
-              bottom:     '-5%',
-              width:      '115%',
-              height:     '115%',
-              objectFit:  'contain',
-              objectPosition: 'bottom right',
-              /* Slight glow to blend with the dark bg */
-              filter:     'drop-shadow(0 0 40px rgba(124,92,255,0.4))',
-              pointerEvents: 'none',
-              userSelect: 'none',
-            }}
             draggable={false}
+            style={{
+              position:       'absolute',
+              right:          'clamp(-40px, -5%, -20px)',
+              /* Vertically centred, slightly overflowing top & bottom */
+              top:            '50%',
+              transform:      'translateY(-50%)',
+              /* Height-driven sizing — bigger than the card so it overflows */
+              height:         'clamp(200px, 28vw, 380px)',
+              width:          'auto',
+              objectFit:      'contain',
+              filter:         'drop-shadow(0 0 60px rgba(124,92,255,0.5)) drop-shadow(0 0 120px rgba(107,76,245,0.25))',
+              pointerEvents:  'none',
+              userSelect:     'none',
+            }}
           />
         </div>
       </div>

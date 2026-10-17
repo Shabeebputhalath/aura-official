@@ -1,137 +1,165 @@
-import { useRef } from 'react';
-import { ArrowRight, Play } from 'lucide-react';
-import { useLiquidReveal } from '@/hooks/useLiquidReveal';
-
+/**
+ * Hero section — WeHexa reference, converted from the provided HTML.
+ * Nav is NOT rendered here — it lives in Navbar.tsx (rendered by App.tsx).
+ * Background: /nature.png (center bottom / cover).
+ */
 export default function Hero() {
-  const containerRef = useRef<HTMLElement>(null);
-  const canvasRef    = useRef<HTMLCanvasElement>(null);
-
-  useLiquidReveal({
-    baseSrc:   '/after.jpg',
-    brushSrc:  '/before.png',
-    containerRef,
-    canvasRef,
-  });
-
   return (
-    <section
-      ref={containerRef}
-      className="relative min-h-screen overflow-hidden"
-      style={{ touchAction: 'pan-y' }}
-    >
-      {/* z:0 — base image */}
-      <img
-        src="/after.jpg"
-        alt=""
-        aria-hidden="true"
-        fetchPriority="high"
-        className="absolute inset-0 h-full w-full object-cover object-center"
-        style={{ zIndex: 0, pointerEvents: 'none', userSelect: 'none' }}
-        draggable={false}
-      />
+    <>
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+        :root{--lime:#d6f53b;--ink:#15171a}
+        .wh-btn{display:inline-flex;align-items:center;gap:10px;border-radius:10px;font-family:'Manrope',system-ui,sans-serif;font-weight:700;font-size:13.5px;text-decoration:none;color:var(--ink);cursor:pointer;border:0;transition:transform .15s}
+        .wh-btn:hover{transform:translateY(-1px)}
+        .wh-btn.lime{background:#7c5cff;padding:6px 6px 6px 16px;color:#fff}
+        .wh-btn.white{background:#fff;padding:6px 6px 6px 16px;color:#0a0a0f}
+        .wh-ico{width:32px;height:32px;border-radius:8px;background:#0a0a0f;display:grid;place-items:center;flex:none}
+        .wh-btn.lime .wh-ico{background:rgba(255,255,255,0.18);border:none}
+        .wh-btn.white .wh-ico{background:#0a0a0f;border:none}
+        .wh-avs{display:flex}
+        .wh-avs span{width:20px;height:20px;border-radius:50%;border:2px solid #fff;margin-left:-6px;display:block}
+        .wh-avs span:first-child{margin-left:0}
+        .wh-avs span:nth-child(1){background:radial-gradient(circle at 50% 38%,#f1c7a1 0 28%,transparent 30%),#3a2a22}
+        .wh-avs span:nth-child(2){background:radial-gradient(circle at 50% 38%,#e3b18a 0 28%,transparent 30%),#c0463a}
+        .wh-avs span:nth-child(3){background:radial-gradient(circle at 50% 38%,#f4d2b5 0 28%,transparent 30%),#e7a53a}
+        @media(prefers-reduced-motion:reduce){.wh-btn{transition:none}}
+      `}</style>
 
-      {/* z:1 — liquid canvas */}
-      <canvas
-        ref={canvasRef}
-        aria-hidden="true"
+      <section
         style={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          zIndex: 1,
-          pointerEvents: 'none',
-          display: 'block',
-        }}
-      />
-
-      {/* z:2 — gradient overlays */}
-      <div
-        aria-hidden="true"
-        style={{ zIndex: 2 }}
-        className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-transparent"
-      />
-      <div
-        aria-hidden="true"
-        style={{ zIndex: 2 }}
-        className="pointer-events-none absolute bottom-0 left-0 right-0 h-36 bg-gradient-to-t from-ink-950/90 via-ink-950/30 to-transparent"
-      />
-
-      {/* z:10 — hero content — all black */}
-      <div
-        className="relative flex min-h-screen flex-col items-center justify-start px-4"
-        style={{ zIndex: 10 }}
+          position:      'relative',
+          width:         '100%',
+          minHeight:     '100vh',
+          overflow:      'hidden',
+          background:    '#2c78d8 url("/nature.png") center bottom / cover no-repeat',
+          paddingTop:    'env(safe-area-inset-top, 0px)',
+          fontFamily:    "'Manrope',system-ui,-apple-system,'Segoe UI',Arial,sans-serif",
+          WebkitFontSmoothing: 'antialiased',
+          color:         '#fff',
+        } as React.CSSProperties}
       >
+        {/* ── Light overlay over bg image ── */}
+        <div style={{
+          position:      'absolute',
+          inset:         0,
+          zIndex:        1,
+          pointerEvents: 'none',
+          background:    'rgba(0, 0, 0, 0.29)',
+        }} aria-hidden="true" />
+
+        {/* ── Black shadow fade at the bottom edge ── */}
+        <div style={{
+          position:      'absolute',
+          bottom:        0,
+          left:          0,
+          right:         0,
+          height:        '120px',
+          zIndex:        2,
+          pointerEvents: 'none',
+          background:    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 100%)',
+        }} aria-hidden="true" />
+
+        {/* Hero content */}
         <div
-          className="flex flex-col items-center text-center"
-          style={{ paddingTop: 'clamp(120px, 26vh, 220px)' }}
+          style={{
+            position:       'relative',
+            zIndex:         4,
+            display:        'flex',
+            flexDirection:  'column',
+            alignItems:     'center',
+            justifyContent: 'center',
+            textAlign:      'center',
+            minHeight:      '100vh',
+            padding:        '80px 24px clamp(3rem,8vh,5rem)',
+          }}
         >
 
-          {/* Badge pill — black border + black text */}
+          {/* ── Badge ───────────────────────────────────────────── */}
           <div
-            className="mb-5 inline-flex items-center gap-1.5 rounded-full border border-black/20 bg-black/8 px-4 py-1.5 shadow-sm backdrop-blur-md animate-fade-down"
-            style={{ animationDelay: '0.05s', opacity: 0, animationFillMode: 'forwards' }}
+            style={{
+              display:       'inline-flex',
+              alignItems:    'center',
+              gap:           '8px',
+              background:    'rgba(255,255,255,0.93)',
+              color:         '#15171a',
+              borderRadius:  '999px',
+              padding:       '5px 14px 5px 5px',
+              fontSize:      '9.5px',
+              fontWeight:    800,
+              letterSpacing: '.2px',
+              textTransform: 'uppercase',
+            } as React.CSSProperties}
           >
-            <span className="text-[13px] font-medium text-black/80 tracking-wide">
-              AI Video Production Studio&nbsp;✦
-            </span>
+            <div className="wh-avs">
+              <span /><span /><span />
+            </div>
+            5000+ Business Scaled Their Intelligent Tech
           </div>
 
-          {/* Headline — black */}
+          {/* ── Headline ──────────────────────────────────────────── */}
           <h1
-            className="animate-fade-up font-display tracking-[-0.02em] text-black"
             style={{
-              animationDelay: '0.15s',
-              opacity: 0,
-              animationFillMode: 'forwards',
-              fontSize: 'clamp(3rem, 7.5vw, 5.5rem)',
-              lineHeight: 1.06,
+              margin:        '22px 0 0',
+              fontWeight:    800,
+              fontSize:      'clamp(34px,5.2vw,60px)',
+              lineHeight:    1.12,
+              letterSpacing: '-1.6px',
+              maxWidth:      '760px',
+              color:         '#fff',
+              textShadow:    '0 2px 24px rgba(20,70,150,0.18)',
             }}
           >
-            <span style={{ fontWeight: 550 }}>Design with </span>
-            <span style={{ fontWeight: 900 }}>AURA.</span>
+            We create AI Videos and Visual Stories that fuel your growth
           </h1>
 
-          {/* Sub-copy — black */}
+          {/* ── Sub-copy ──────────────────────────────────────────── */}
           <p
-            className="mt-5 animate-fade-up font-body text-black/65"
             style={{
-              animationDelay: '0.28s',
-              opacity: 0,
-              animationFillMode: 'forwards',
-              fontSize: 'clamp(0.95rem, 1.8vw, 1.1rem)',
-              lineHeight: 1.65,
+              margin:     '22px 0 0',
+              maxWidth:   '520px',
+              fontSize:   'clamp(12.5px,1.15vw,14px)',
+              lineHeight: 1.55,
+              fontWeight: 500,
+              color:      'rgba(255,255,255,0.92)',
             }}
           >
-            From concept to final frame, we craft cinematic AI videos<br />
-            that make brands impossible to ignore.
+           From cinematic AI-generated videos to immersive visual storytelling. We bridge the gap between creative imagination and stunning digital experiences.
+           Do you like this personality?
           </p>
 
-          {/* CTAs */}
+          {/* ── CTA row ───────────────────────────────────────────── */}
           <div
-            className="mt-9 flex animate-fade-up flex-row items-center justify-center gap-6"
-            style={{ animationDelay: '0.42s', opacity: 0, animationFillMode: 'forwards' }}
+            style={{
+              display:        'flex',
+              gap:            '12px',
+              marginTop:      '26px',
+              flexWrap:       'wrap',
+              justifyContent: 'center',
+            }}
           >
-            {/* Filled black pill */}
-            <a
-              href="#contact"
-              className="group inline-flex items-center gap-2 rounded-full bg-black px-6 py-3 text-[14px] font-semibold text-white shadow-lg shadow-black/20 transition-all duration-200 hover:-translate-y-px hover:bg-ink-800 hover:shadow-xl"
-            >
-              Get Started
-              <ArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" />
+            {/* Book a Call — accent purple */}
+            <a className="wh-btn lime" href="#contact">
+              Book a Call
+              <span className="wh-ico">
+                <svg width="13" height="13" viewBox="0 0 14 14">
+                  <path d="M3 7h8M7.5 3.5L11 7l-3.5 3.5" fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </span>
             </a>
 
-            {/* Ghost black "Watch Demo" */}
-            <button className="inline-flex items-center gap-2 text-[14px] font-medium text-black/80 transition-all duration-200 hover:text-black">
-              <span className="flex h-7 w-7 items-center justify-center rounded-full border border-black/25 bg-black/8 backdrop-blur-sm">
-                <Play className="h-2.5 w-2.5 translate-x-px fill-black text-black" />
+            {/* View Our Work — white */}
+            <a className="wh-btn white" href="#works">
+              View Our Work
+              <span className="wh-ico">
+                <svg width="13" height="13" viewBox="0 0 14 14">
+                  <path d="M3 11L11 3M5 3h6v6" fill="none" stroke="#fff" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </span>
-              Watch Demo
-            </button>
+            </a>
           </div>
 
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
