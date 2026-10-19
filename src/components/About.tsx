@@ -149,11 +149,11 @@ export default function About() {
 
           {/* ── LEFT: headline ── */}
           <div
-            style={{
-              opacity:   topVis ? 1 : 0,
-              transform: topVis ? 'translateY(0)' : 'translateY(24px)',
-              transition:'opacity 0.8s ease, transform 0.8s ease',
-            }}
+            // style={{
+            //   opacity:   topVis ? 1 : 0,
+            //   transform: topVis ? 'translateY(0)' : 'translateY(24px)',
+            //   transition:'opacity 0.8s ease, transform 0.8s ease',
+            // }}
           >
             <h2
               style={{
@@ -166,7 +166,7 @@ export default function About() {
                 margin:        0,
               }}
             >
-              AURA AI founded{' '}
+              AURA AI founded   {' '}
               <span
                 style={{
                   /* Accent gradient — site palette */

@@ -57,7 +57,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-black">
+    <footer className="relative overflow-hidden" style={{ background: 'linear-gradient(135deg, #0a0812 0%, #0d0a1a 40%, #080610 100%)' }}>
 
       {/* ── Purple shadow glows ───────────────────────────────────
           Two layered radial blooms using the site accent palette.

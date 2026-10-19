@@ -88,7 +88,7 @@ export default function Contact() {
       {/* ── Centered form panel — floating on top of the full video ─ */}
       <div className="relative z-20 flex min-h-screen items-center justify-center px-4 py-24 lg:justify-end lg:pr-16 xl:pr-24">
         <div
-          className="w-full max-w-2xl overflow-hidden"
+          className="w-full max-w-3xl overflow-hidden"
           style={{
             background:   'rgba(0,0,0,0.96)',
             backdropFilter: 'blur(18px)',

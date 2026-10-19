@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, Sparkles, Eye, EyeOff, Film, Code } from 'lucide-react';
+import { Plus, Pencil, Trash2, ArrowUp, ArrowDown, Sparkles, Eye, EyeOff, Film, Code, Instagram } from 'lucide-react';
 import { supabase, type Capability } from '@/lib/supabase';
 import { Card } from '@/components/admin/Card';
 import { Button } from '@/components/admin/Button';
@@ -19,13 +19,14 @@ function extractSrc(raw: string): string | null {
 }
 
 /* ── Determine the media type label ──────────────────────────────────────── */
-function mediaType(c: Capability): 'Pinterest' | 'Video' | 'Image' {
-  if (c.embed_code) return 'Pinterest';
-  if (c.video_url)  return 'Video';
+function mediaType(c: Capability): 'Instagram' | 'Pinterest' | 'Video' | 'Image' {
+  if (c.instagram_embed) return 'Instagram';
+  if (c.embed_code)      return 'Pinterest';
+  if (c.video_url)       return 'Video';
   return 'Image';
 }
 
-const emptyForm = { label: '', embed_code: '', video_url: '', is_active: true };
+const emptyForm = { label: '', instagram_embed: '', embed_code: '', video_url: '', is_active: true };
 
 export function CapabilitiesPage() {
   const { toast }   = useToast();
@@ -54,10 +55,11 @@ export function CapabilitiesPage() {
 
   function openEdit(c: Capability) {
     setForm({
-      label:      c.label,
-      embed_code: c.embed_code ?? '',
-      video_url:  c.video_url  ?? '',
-      is_active:  c.is_active,
+      label:           c.label,
+      instagram_embed: c.instagram_embed ?? '',
+      embed_code:      c.embed_code ?? '',
+      video_url:       c.video_url  ?? '',
+      is_active:       c.is_active,
     });
     setEditId(c.id);
     setModalOpen(true);
@@ -65,17 +67,18 @@ export function CapabilitiesPage() {
 
   async function save() {
     if (!form.label.trim()) { toast('Label is required', 'error'); return; }
-    if (!form.embed_code.trim() && !form.video_url.trim()) {
-      toast('Add either a Pinterest embed code or a Video URL', 'error'); return;
+    if (!form.instagram_embed.trim() && !form.embed_code.trim() && !form.video_url.trim()) {
+      toast('Add an Instagram embed, Pinterest embed, or Video URL', 'error'); return;
     }
     setSaving(true);
 
     const payload = {
-      label:      form.label,
-      image_url:  '',
-      video_url:  form.video_url.trim()  || null,
-      embed_code: form.embed_code.trim() || null,
-      is_active:  form.is_active,
+      label:           form.label,
+      image_url:       '',
+      instagram_embed: form.instagram_embed.trim() || null,
+      video_url:       form.video_url.trim()        || null,
+      embed_code:      form.embed_code.trim()       || null,
+      is_active:       form.is_active,
     };
 
     if (editId) {
@@ -179,7 +182,9 @@ export function CapabilitiesPage() {
 
                 {/* Media type icon */}
                 <div className="flex h-[64px] w-[36px] shrink-0 flex-col items-center justify-center gap-1 rounded-lg border border-white/[0.06] bg-ink-900">
-                  {c.embed_code
+                  {c.instagram_embed
+                    ? <Instagram className="h-4 w-4 text-pink-400" />
+                    : c.embed_code
                     ? <Code className="h-4 w-4 text-accent-400" />
                     : <Film className="h-4 w-4 text-accent-400" />
                   }
@@ -243,7 +248,45 @@ export function CapabilitiesPage() {
             placeholder="e.g. Cinematic Worlds"
           />
 
-          {/* Pinterest embed code — primary field */}
+          {/* ── Instagram Reel embed code — TOP PRIORITY ── */}
+          <div>
+            <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
+              <Instagram className="h-3.5 w-3.5 text-pink-400" />
+              Instagram Reel Embed Code
+              <span className="ml-1 rounded bg-pink-500/15 px-1.5 py-0.5 text-[10px] font-semibold text-pink-300 uppercase tracking-wide">
+                Priority
+              </span>
+            </label>
+            <textarea
+              rows={5}
+              value={form.instagram_embed}
+              onChange={e => setForm(f => ({ ...f, instagram_embed: e.target.value }))}
+              placeholder={`<blockquote\n  class="instagram-media"\n  data-instgrm-permalink="https://www.instagram.com/reel/Dca9WPwC9Cs/"\n  data-instgrm-version="14">\n</blockquote>\n<script async src="https://www.instagram.com/embed.js"></script>`}
+              className="w-full resize-none rounded-lg border border-white/10 bg-ink-950/50 px-4 py-3 font-mono text-xs text-white placeholder:text-ink-600 focus:border-pink-500/40 focus:outline-none"
+            />
+            <p className="mt-1.5 text-xs text-ink-500">
+              Paste the full Instagram <code className="text-ink-300">&lt;blockquote&gt;</code> embed code from a Reel's share menu → Embed. Takes priority over all other media.
+            </p>
+
+            {/* Instagram live preview */}
+            {form.instagram_embed.trim() && (
+              <div className="mt-3 flex items-start gap-4">
+                <div className="flex items-center gap-2 rounded-lg border border-pink-500/20 bg-pink-500/[0.06] px-3 py-2">
+                  <Instagram className="h-4 w-4 text-pink-400" />
+                  <p className="text-xs text-pink-300">Instagram reel saved — will render on the website via embed.js</p>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3">
+            <div className="flex-1 border-t border-white/[0.06]" />
+            <span className="text-xs text-ink-500">or Pinterest</span>
+            <div className="flex-1 border-t border-white/[0.06]" />
+          </div>
+
+          {/* Pinterest embed code */}
           <div>
             <label className="mb-2 flex items-center gap-2 text-xs font-medium uppercase tracking-[0.15em] text-ink-300">
               <Code className="h-3.5 w-3.5 text-accent-400" />

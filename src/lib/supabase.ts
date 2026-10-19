@@ -91,8 +91,10 @@ export interface Capability {
   image_url: string;
   video_url: string | null;
   embed_code: string | null;
+  instagram_embed: string | null;
   sort_order: number;
   is_active: boolean;
+  href?: string;
   created_at: string;
   updated_at: string;
 }

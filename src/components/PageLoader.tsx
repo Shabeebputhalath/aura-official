@@ -243,12 +243,12 @@ export default function PageLoader({ onFinish, stopScroll, startScroll }: PageLo
         </div>
 
         {/* "Click to skip" hint — fades in after the draw completes */}
-        <p
+        {/* <p
           className="absolute bottom-10 text-xs tracking-[0.25em] uppercase text-white/20 transition-opacity duration-700"
           style={{ opacity: phase === 'ready' && !isExiting ? 1 : 0 }}
         >
           Click anywhere to skip
-        </p>
+        </p> */}
       </div>
     </>
   );

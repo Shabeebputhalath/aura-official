@@ -1,71 +1,79 @@
-import { clientLogos } from '@/data/content';
+/* ── 3 real logos × 8 copies = 24 items
+   Translate -50% = back to item 13 which is identical to item 1
+   Result: zero blank space, perfectly seamless on any screen width  ── */
+const LOGOS = [
+  { src: '/laban.png', alt: 'Laban' },
+  { src: '/grapo.png', alt: 'Grapo' },
+  { src: '/nahdi.png', alt: 'Nahdi' },
+  { src: '/fizz.png', alt: 'Fizz' },
 
-/* Triple the list — animation translates exactly 1/3 so the loop is invisible */
-const tripled = [...clientLogos, ...clientLogos, ...clientLogos];
+];
+
+const ITEMS = [
+  ...LOGOS, ...LOGOS, ...LOGOS, ...LOGOS,
+  ...LOGOS, ...LOGOS, ...LOGOS, ...LOGOS,
+];
 
 export default function TrustSection() {
   return (
-    <section className="relative border-b border-white/[0.04] py-14 overflow-hidden">
+    <section className="relative border-b border-white/[0.04] overflow-hidden" style={{ paddingBlock: '1.25rem' }}>
 
       <style>{`
-        @keyframes marquee-x {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-33.3333%); }
+        @keyframes tm-scroll {
+          from { transform: translateX(0); }
+          to   { transform: translateX(-50%); }
         }
-        .marquee-inner {
-          display:   flex;
-          width:     max-content;
-          animation: marquee-x 28s linear infinite;
+        .tm-track {
+          display:     flex;
+          width:       max-content;
+          align-items: center;
+          animation:   tm-scroll 14s linear infinite;
           will-change: transform;
         }
-        .marquee-inner:hover {
-          animation-play-state: paused;
-        }
+        .tm-track:hover { animation-play-state: paused; }
       `}</style>
 
-      {/* Label */}
-      <p className="mb-8 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-400">
+      {/* Heading */}
+      <p className="mb-5 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-ink-400">
         Trusted by Ambitious Brands and Creators
       </p>
 
-      {/* Overflow container with edge fades */}
-      <div className="relative overflow-hidden">
+      {/* Track wrapper with edge fades */}
+      <div className="relative overflow-hidden" style={{ margin: '0 clamp(4rem, 15vw, 18rem)' }}>
 
         {/* Left fade */}
-        <div
-          className="pointer-events-none absolute left-0 top-0 bottom-0 z-10"
-          style={{ width: '8rem', background: 'linear-gradient(to right, #050507 0%, transparent 100%)' }}
-          aria-hidden="true"
-        />
-        {/* Right fade */}
-        <div
-          className="pointer-events-none absolute right-0 top-0 bottom-0 z-10"
-          style={{ width: '8rem', background: 'linear-gradient(to left, #050507 0%, transparent 100%)' }}
-          aria-hidden="true"
-        />
+        <div aria-hidden="true" className="pointer-events-none absolute left-0 top-0 bottom-0 z-10"
+          style={{ width:'4rem', background:'linear-gradient(to right,#050507,transparent)' }} />
 
-        {/* Moving track */}
-        <div className="marquee-inner">
-          {tripled.map((logo, i) => (
-            <span
+        {/* Right fade */}
+        <div aria-hidden="true" className="pointer-events-none absolute right-0 top-0 bottom-0 z-10"
+          style={{ width:'4rem', background:'linear-gradient(to left,#050507,transparent)' }} />
+
+        {/* Scrolling strip */}
+        <div className="tm-track">
+          {ITEMS.map((logo, i) => (
+            <div
               key={i}
-              style={{
-                fontFamily:    '"Figtree", sans-serif',
-                fontWeight:    700,
-                fontSize:      '13px',
-                letterSpacing: '0.14em',
-                textTransform: 'uppercase',
-                color:         'rgba(154,154,171,0.50)',
-                padding:       '0 2.75rem',
-                whiteSpace:    'nowrap',
-                transition:    'color 0.2s',
-                cursor:        'default',
-              }}
-              onMouseEnter={e => { (e.currentTarget as HTMLSpanElement).style.color = 'rgba(255,255,255,0.85)'; }}
-              onMouseLeave={e => { (e.currentTarget as HTMLSpanElement).style.color = 'rgba(154,154,171,0.50)'; }}
+              style={{ padding: '0 3rem', flexShrink: 0, display: 'flex', alignItems: 'center' }}
             >
-              {logo}
-            </span>
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                draggable={false}
+                style={{
+                  height:     '30px',
+                  width:      'auto',
+                  objectFit:  'contain',
+                  filter:     'brightness(0) invert(1)',
+                  opacity:    0.5,
+                  transition: 'opacity 0.2s',
+                  userSelect: 'none',
+                  display:    'block',
+                }}
+                onMouseEnter={e => { (e.currentTarget as HTMLImageElement).style.opacity = '1'; }}
+                onMouseLeave={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.5'; }}
+              />
+            </div>
           ))}
         </div>
       </div>

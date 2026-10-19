@@ -285,10 +285,10 @@ export const faqItems: FAQItem[] = [
     question: 'How long does a project take?',
     answer: 'Timelines vary by scope. A Starter package typically delivers in 5–7 business days. Studio packages take 2–3 weeks. Signature campaigns with multiple videos and custom worlds can take 4–8 weeks depending on complexity.',
   },
-  {
-    question: 'Can you create videos for social media?',
-    answer: 'Yes — we deliver in any aspect ratio you need. Vertical for TikTok and Instagram Reels, square for feeds, and wide for YouTube. We optimize every format for maximum engagement on each platform.',
-  },
+  // {
+  //   question: 'Can you create videos for social media?',
+  //   answer: 'Yes — we deliver in any aspect ratio you need. Vertical for TikTok and Instagram Reels, square for feeds, and wide for YouTube. We optimize every format for maximum engagement on each platform.',
+  // },
   {
     question: 'Do you provide voiceovers and music?',
     answer: 'Yes. We offer AI-generated voiceovers in multiple languages and styles, licensed music selection, custom sound design, and original score creation as part of our post-production services.',
@@ -301,10 +301,10 @@ export const faqItems: FAQItem[] = [
     question: 'Can you create custom characters and environments?',
     answer: 'Yes. We build original AI characters with consistent appearance across multiple shots and scenes, as well as fully realized environments and worlds tailored to your brand and story.',
   },
-  {
-    question: 'Do you offer custom pricing?',
-    answer: 'For projects that don\'t fit our standard packages, we offer fully custom production plans. Tell us about your campaign and we\'ll build a tailored proposal around your goals and budget.',
-  },
+  // {
+  //   question: 'Do you offer custom pricing?',
+  //   answer: 'For projects that don\'t fit our standard packages, we offer fully custom production plans. Tell us about your campaign and we\'ll build a tailored proposal around your goals and budget.',
+  // },
   {
     question: 'What formats do you deliver?',
     answer: 'We deliver in all major formats — MP4, MOV, ProRes — at resolutions up to 4K. We also provide web-optimized versions, social media formats, and any specific delivery specs you require.',

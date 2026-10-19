@@ -26,7 +26,7 @@ export function AdminApp({
       <ToastProvider>
         <AdminShell current={page} onNavigate={setPage} onExit={onExit} onLogout={onLogout}>
           {page === 'dashboard'    && <DashboardPage onNavigate={setPage} />}
-          {page === 'projects'     && <ProjectsPage />}
+          {page === 'projects'     && <CapabilitiesPage />}
           {page === 'services'     && <ServicesPage />}
           {page === 'pricing'      && <PricingPage />}
           {page === 'inquiries'    && <InquiriesPage />}
@@ -39,3 +39,5 @@ export function AdminApp({
     </AdminThemeProvider>
   );
 }
+
+//<ProjectsPage />
