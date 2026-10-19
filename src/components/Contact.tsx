@@ -80,8 +80,7 @@ export default function Contact() {
         >
           Have a project?
           <br />
-          We would love
-          to help.
+          We would love to help.
         </h2>
         <p className="mt-6 text-sm text-white/50">hello@auraai.studio</p>
       </div>
@@ -91,7 +90,7 @@ export default function Contact() {
         <div
           className="w-full max-w-2xl overflow-hidden"
           style={{
-            background:   'rgba(10,10,10,0.82)',
+            background:   'rgba(0,0,0,0.96)',
             backdropFilter: 'blur(18px)',
             WebkitBackdropFilter: 'blur(18px)',
             borderRadius: '1.25rem',
@@ -122,11 +121,11 @@ export default function Contact() {
             <form onSubmit={handleSubmit} className="flex flex-1 flex-col">
 
               {/* Mini nav */}
-              <div className="flex items-center justify-end gap-6 border-b border-white/[0.07] px-7 py-4">
+              {/* <div className="flex items-center justify-end gap-6 border-b border-white/[0.07] px-7 py-4">
                 <span className="cursor-pointer text-[12px] text-white/35 transition-colors hover:text-white/60">Works</span>
                 <span className="cursor-pointer text-[12px] text-white/35 transition-colors hover:text-white/60">About</span>
                 <span className="text-[12px] font-semibold text-white">Contacts</span>
-              </div>
+              </div> */}
 
               {/* Body */}
               <div className="flex flex-1 flex-col justify-between gap-8 px-7 py-8">

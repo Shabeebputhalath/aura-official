@@ -53,10 +53,10 @@ export default function Hero() {
           bottom:        0,
           left:          0,
           right:         0,
-          height:        '120px',
+          height:        '160px',
           zIndex:        2,
           pointerEvents: 'none',
-          background:    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.85) 100%)',
+          background:    'linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.92) 100%)',
         }} aria-hidden="true" />
 
         {/* Hero content */}

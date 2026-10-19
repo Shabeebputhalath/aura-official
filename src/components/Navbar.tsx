@@ -113,7 +113,7 @@ export default function Navbar({
             style={{ display:'flex', alignItems:'center', textDecoration:'none', flexShrink:0 }}
           >
             <img
-              src="/test.png"
+              src={pastHero ? '/testaura.png' : '/aura.png'}
               alt="AURA AI"
               style={{ height:'34px', width:'auto', display:'block' }}
             />

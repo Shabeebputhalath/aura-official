@@ -55,7 +55,7 @@ export default function Capabilities() {
   const doubled = [...items, ...items];
 
   return (
-    <section className="relative py-24 lg:py-32 overflow-hidden">
+    <section id="works" className="relative py-24 lg:py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <div ref={ref} className="mb-16 max-w-3xl">
           <p className={`reveal section-label transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>

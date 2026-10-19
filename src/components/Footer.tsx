@@ -57,7 +57,7 @@ const socials = [
 
 export default function Footer() {
   return (
-    <footer className="relative overflow-hidden bg-ink-950">
+    <footer className="relative overflow-hidden bg-black">
 
       {/* ── Purple shadow glows ───────────────────────────────────
           Two layered radial blooms using the site accent palette.
@@ -153,17 +153,14 @@ export default function Footer() {
           Uses a subtle accent purple tint to catch the glow.        */}
       <div
         aria-hidden="true"
-        className="relative z-[1] select-none overflow-hidden whitespace-nowrap text-center font-display font-bold leading-none tracking-tight"
+        className="relative z-[1] select-none whitespace-nowrap text-center font-display font-bold leading-none tracking-tight"
         style={{
           fontSize:      'clamp(5.5rem, 19vw, 17rem)',
           letterSpacing: '-0.03em',
-          /* Accent-tinted near-transparent so it picks up the glow */
           color:         'rgba(124,92,255,0.13)',
-          /* Crop the bottom half — same treatment as reference */
-          maxHeight:     '0.55em',
-          overflow:      'hidden',
           marginTop:     '0.1em',
-          paddingBottom: '0.6em',
+          paddingBottom: '1.5rem',
+          overflow:      'visible',
         }}
       >
         AURA AI

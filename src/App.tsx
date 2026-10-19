@@ -232,7 +232,7 @@ function AdminButton({ onClick }: { onClick: () => void }) {
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-50 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 bg-ink-900/80 text-ink-300 backdrop-blur-xl transition-all duration-300 hover:border-accent-500/30 hover:text-accent-400"
+      className="fixed bottom-6 left-6 z-50 flex h-11 w-11 items-center justify-center rounded-full border border-white/10 bg-ink-900/90 text-ink-300 shadow-lg shadow-black/40 backdrop-blur-xl transition-all duration-300 hover:border-accent-500/30 hover:text-accent-400"
       aria-label="Admin Dashboard"
       title="Admin Dashboard"
     >
