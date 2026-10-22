@@ -117,7 +117,8 @@ export default function About() {
         background:  '#000000',
         /* Short gap after hero — hero already fades to ink-950 at its
            bottom edge, so 1px of black closes the seam cleanly */
-        marginTop:   '1px',
+         marginTop: 0,
+        borderTop: 'none',
       }}
     >
 
@@ -137,15 +138,17 @@ export default function About() {
         }}
       >
         <div
+          className="about-top-grid"
           style={{
-            display:             'grid',
-            /* headline takes ~55%, para takes ~45% */
+            display: 'grid',
             gridTemplateColumns: '1.2fr 1fr',
-            gap:                 'clamp(2rem,5vw,6rem)',
-            alignItems:          'start',
+            gap: 'clamp(2rem,5vw,6rem)',
+            alignItems: 'start',
           }}
-          className="block lg:grid"   /* stack on mobile */
         >
+          <style>{`
+            @media(max-width:768px){ .about-top-grid{ grid-template-columns:1fr!important } }
+          `}</style>
 
           {/* ── LEFT: headline ── */}
           <div
@@ -275,14 +278,14 @@ export default function About() {
         <div style={{ height: 'clamp(2.5rem,5vw,4rem)' }} />
 
         <div
+          className="about-stats-grid"
           style={{
             display:             'grid',
             gridTemplateColumns: 'repeat(4,1fr)',
             gap:                 'clamp(1.5rem,3vw,2rem)',
           }}
-          /* 2 cols on mobile */
-          className="grid-cols-2 sm:grid-cols-4"
         >
+          <style>{`@media(max-width:640px){ .about-stats-grid{ grid-template-columns:repeat(2,1fr)!important } }`}</style>
           {STATS.map((s, i) => (
             <StatItem
               key={s.label}

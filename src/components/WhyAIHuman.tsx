@@ -38,6 +38,18 @@ export default function WhyAIHuman() {
   return (
     <section className="relative py-12 lg:py-16" style={{ background: '#050507' }}>
       <div className="relative z-10 mx-auto w-full max-w-[1600px] px-2 sm:px-4 lg:px-5">
+         <div ref={ref} className="mb-16 text-center">
+          <p className={`reveal section-label justify-center transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>
+            Know
+          </p>
+          <h2
+            className={`reveal mt-6 font-display text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl transition-all duration-700 ${visible ? 'reveal-visible' : ''
+              }`}
+            style={{ transitionDelay: '100ms' }}
+          >
+            Meet <span className="text-gradient-accent">The founder!</span>
+          </h2>
+        </div>
 
         {/* ── Full-width card ──────────────────────────────────────── */}
         <div
@@ -82,15 +94,18 @@ export default function WhyAIHuman() {
           <div
             className={`absolute bottom-0 left-0 right-0 z-10 transition-all duration-700 ${visible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
             style={{
-              padding:         'clamp(1.5rem,3vw,2.5rem) clamp(1.5rem,4vw,3rem)',
-              display:         'grid',
-              gridTemplateColumns: 'repeat(4,1fr)',
-              gap:             'clamp(1rem,2vw,2rem)',
+              padding: 'clamp(1rem,2vw,2rem) clamp(1rem,3vw,2.5rem)',
             }}
           >
-            {stats.map((stat, i) => (
-              <StatItem key={stat.label} stat={stat} start={visible} index={i} />
-            ))}
+            <style>{`
+              .stats-bar { display:grid; grid-template-columns:repeat(4,1fr); gap:clamp(0.75rem,2vw,2rem); }
+              @media(max-width:640px){ .stats-bar{ grid-template-columns:repeat(2,1fr)!important } }
+            `}</style>
+            <div className="stats-bar">
+              {stats.map((stat, i) => (
+                <StatItem key={stat.label} stat={stat} start={visible} index={i} />
+              ))}
+            </div>
           </div>
         </div>
       </div>

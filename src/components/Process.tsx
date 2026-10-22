@@ -6,12 +6,10 @@ export default function Process() {
 
   return (
     <section id="process" className="relative border-y border-white/[0.04] py-24 lg:py-32">
-      {/* Background gradient */}
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-ink-950 via-ink-900/50 to-ink-950" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-10">
-        {/* Header */}
-        <div ref={ref} className="mb-20 max-w-3xl">
+        <div ref={ref} style={{ marginBottom:'5rem', padding:'0 clamp(0.5rem,2vw,1.5rem)' }}>
           <p className={`reveal section-label transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>
             Our Process
           </p>

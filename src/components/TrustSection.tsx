@@ -16,7 +16,7 @@ const ITEMS = [
 
 export default function TrustSection() {
   return (
-    <section className="relative border-b border-white/[0.04] overflow-hidden" style={{ paddingBlock: '1.25rem' }}>
+    <section className="relative overflow-hidden" style={{ paddingBlock: '1.25rem' }}>
 
       <style>{`
         @keyframes tm-scroll {
@@ -39,7 +39,7 @@ export default function TrustSection() {
       </p>
 
       {/* Track wrapper with edge fades */}
-      <div className="relative overflow-hidden" style={{ margin: '0 clamp(4rem, 15vw, 18rem)' }}>
+      <div className="relative overflow-hidden" style={{ margin: '0 clamp(0.75rem, 8vw, 18rem)' }}>
 
         {/* Left fade */}
         <div aria-hidden="true" className="pointer-events-none absolute left-0 top-0 bottom-0 z-10"

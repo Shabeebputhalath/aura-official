@@ -213,13 +213,13 @@ function App() {
           <About />
           <Capabilities />
           <Services />
-          <WhyAIHuman />
-          <Process />
-          <Pricing />
-          <Testimonials />
           <FAQ />
+          <WhyAIHuman />
+          {/* <Process /> */}
+          {/* <Pricing /> */}
+          {/* <Testimonials /> */}
           <Contact />
-          <FinalCTA />
+          {/* <FinalCTA /> */}
         </main>
         <Footer />
         <AdminButton onClick={() => navigate('admin')} />

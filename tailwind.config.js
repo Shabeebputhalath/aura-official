@@ -39,7 +39,7 @@ export default {
         },
       },
       fontFamily: {
-        display: ['"Figtree"', 'sans-serif'],
+        display: ['"Inter Tight"', 'sans-serif'],
         body:    ['"Figtree"', 'sans-serif'],
       },
       animation: {

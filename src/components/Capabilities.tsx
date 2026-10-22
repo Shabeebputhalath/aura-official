@@ -69,19 +69,21 @@ export default function Capabilities() {
         </div>
       </div>
 
-      {/* ── Full-width 4-column grid — no side margins ── */}
-      <div
-        className="reel-grid"
-        style={{
-          position: 'relative', zIndex: 1,
-          display: 'grid',
-          gridTemplateColumns: 'repeat(4, minmax(0,1fr))',
-          gap: '2px',
-          width: '90%',
-          padding: '0 clamp(0.5 rem, 2vw, 1.5rem)',
-          alignItems: 'start',
-        }}
-      >
+     {/* ── 4-column grid with side margins ── */}
+<div
+  className="reel-grid"
+  style={{
+    position: 'relative',
+    zIndex: 1,
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+    gap: '2px',
+    width: '90%',
+    margin: '0 auto',
+    padding: '4',
+    alignItems: 'start',
+  }}
+>
         <style>{`
           @media(max-width:900px){ .reel-grid{ grid-template-columns:repeat(2,minmax(0,1fr))!important } }
           .reel-card:hover { transform:translateY(-6px)!important; border-color:rgba(124,92,255,0.45)!important; box-shadow:0 20px 60px rgba(124,92,255,0.2)!important; }

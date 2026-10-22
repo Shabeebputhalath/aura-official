@@ -22,7 +22,7 @@ export default function Services() {
         padding: 'clamp(4rem,8vw,7rem) 0',
       }}
     >
-      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(1.25rem,4vw,2.5rem)' }}>
+      <div style={{ maxWidth: 1280, margin: '0 auto', padding: '0 clamp(0.5rem,2vw,1.5rem)' }}>
 
         {/* ── Header ─────────────────────────────────────────── */}
         <div ref={ref} style={{ marginBottom: 'clamp(2.5rem,5vw,4rem)', maxWidth: '36rem' }}>
