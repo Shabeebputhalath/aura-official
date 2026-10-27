@@ -36,7 +36,7 @@ export default function WhyAIHuman() {
   const { ref, visible } = useReveal();
 
   return (
-    <section className="relative py-12 lg:py-16" style={{ background: '#050507' }}>
+    <section className="relative py-12 lg:py-16" style={{ background: '#a57cf7' }}>
       <div className="relative z-10 mx-auto w-full max-w-[1600px] px-2 sm:px-4 lg:px-5">
          <div ref={ref} className="mb-16 text-center">
           <p className={`reveal section-label justify-center transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>
