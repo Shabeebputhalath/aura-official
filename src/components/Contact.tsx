@@ -48,14 +48,14 @@ const empty: FormState = { firstName:'', lastName:'', email:'', phone:'', messag
 /* colour tokens */
 const C = {
   bg:       '#000000',
-  cardBg:   '#0c0a21',
-  cardBord: '#1b1937',
-  inputBg:  '#13112d',
+  cardBg:   '#000000',
+  cardBord: '#0e0d1b',
+  inputBg:  '#05050c',
   inputBord:'#28254d',
-  txtaBg:   '#15123a',
+  txtaBg:   '#090811',
   text:     '#e8e6f5',
   muted:    '#c3c1d8',
-  purple:   '#a57cf7',
+  purple:   '#5102f0',
 } as const;
 
 export default function Contact() {
@@ -116,7 +116,7 @@ export default function Contact() {
         .ct-submit{transition:filter .15s,transform .15s;}
         .ct-submit:hover{filter:brightness(1.1);transform:translateY(-1px);}
         .ct-infocard{transition:border-color .2s,background .2s;}
-        .ct-infocard:hover{border-color:rgba(165,124,247,.35)!important;background:rgba(165,124,247,.05)!important;}
+        .ct-infocard:hover{border-color:rgba(165,124,247,.35)!important;background:rgba(216, 84, 8, 0.05)!important;}
         @media(max-width:768px){
           .ct-cols{grid-template-columns:1fr!important;}
           .ct-h1{font-size:clamp(2rem,8vw,3rem)!important;white-space:normal!important;margin-left:0!important;margin-right:0!important;}
@@ -138,7 +138,7 @@ export default function Contact() {
 
       {/* ── Ring — top right (full width positioned) ──────────── */}
       <div aria-hidden="true" style={{
-        position:'absolute',right:'-4%',top:'-8%',
+        position:'absolute',right:'-4%',top:'10%',
         width:'clamp(280px,30vw,480px)',height:'clamp(280px,30vw,480px)',
         pointerEvents:'none',
       }}>
@@ -191,7 +191,7 @@ export default function Contact() {
           <div style={{ display:'flex',flexDirection:'column',alignItems:'center',
             gap:'1.5rem',padding:'6rem 1rem',textAlign:'center' }}>
             <span style={{ width:72,height:72,borderRadius:'50%',
-              background:'rgba(124,92,255,0.15)',border:'1px solid rgba(124,92,255,0.35)',
+              background:'rgba(102, 63, 255, 0.94)',border:'1px solid rgba(124,92,255,0.35)',
               display:'flex',alignItems:'center',justifyContent:'center' }}>
               <Check style={{ width:32,height:32,color:C.purple }}/>
             </span>
@@ -350,7 +350,7 @@ export default function Contact() {
                   cursor:submitting?'not-allowed':'pointer',
                   font:'600 15px/48px "Figtree","Inter",sans-serif',
                   color:'#fff',
-                  background:'linear-gradient(180deg,#9468f2 0%,#a98af9 100%)',
+                  background:'#5102f0',
                   boxShadow:'inset 0 1px 0 rgba(255,255,255,.18),0 0 28px rgba(139,92,246,.3)',
                   opacity:submitting?.7:1,
                 }}>
