@@ -314,7 +314,7 @@ export default function Contact() {
                 <div className="ct-row" style={{ display:'flex',gap:12 }}>
                   {[
                     { k:'email',id:'em',label:'Email',type:'email',ph:'you@company.com',    req:true  },
-                    { k:'phone',id:'ph',label:'Phone',type:'tel',  ph:'+1 (000) 000-0000', req:false },
+                    { k:'phone',id:'ph',label:'Phone',type:'tel',  ph:'+91 88912 52902', req:false },
                   ].map(f => (
                     <div key={f.k} style={{ flex:1,minWidth:0 }}>
                       <label htmlFor={f.id} style={{ display:'block',fontSize:12,fontWeight:500,
