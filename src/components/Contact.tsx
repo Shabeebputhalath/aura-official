@@ -257,7 +257,7 @@ export default function Contact() {
                     </svg>,
                   },
                   {
-                    label:'Phone', val:'+91 000 000 0000',
+                    label:'Phone', val:'+91 88912 52902',
                     icon:<svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
                       <path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.6 21 3 13.4 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8Z"/>
                     </svg>,
