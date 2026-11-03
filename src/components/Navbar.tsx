@@ -34,11 +34,11 @@ export default function Navbar({
   }, [menuOpen]);
 
   const links = [
-    { label: 'Home',     fn: () => { window.location.hash = ''; window.scrollTo({ top: 0 }); } },
-    { label: 'About',    fn: onNavigateAbout    },
-    { label: 'Work',     fn: onNavigateWork     },
+    { label: 'Home',     fn: () => { window.location.hash = ''; window.scrollTo({ top: 0, behavior: 'smooth' }); } },
+    { label: 'About',    fn: onNavigateAbout },
+    { label: 'Work',     fn: () => { const el = document.getElementById('works');   el?.scrollIntoView({ behavior: 'smooth' }); } },
     { label: 'Services', fn: onNavigateServices },
-    { label: 'Contact',  fn: onNavigateContact  },
+    { label: 'Contact',  fn: () => { const el = document.getElementById('contact'); el?.scrollIntoView({ behavior: 'smooth' }); } },
   ];
 
   /* ── Colour tokens ──────────────────────────────────────────

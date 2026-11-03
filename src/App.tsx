@@ -144,62 +144,62 @@ function App() {
     );
   }
 
-  // ── Public routes (hash-based) ───────────────────────────────
-  if (route === 'work') {
-    return (
-      <>
-        {loader}
-        <div className="relative min-h-screen bg-ink-950">
-          <Navbar {...navHandlers} />
-          <WorkPage />
-          <Footer />
-          <AdminButton onClick={() => navigate('admin')} />
-        </div>
-      </>
-    );
-  }
+  // ── Public routes (hash-based) — HIDDEN for now (code preserved) ───────────
+  // if (route === 'work') {
+  //   return (
+  //     <>
+  //       {loader}
+  //       <div className="relative min-h-screen bg-ink-950">
+  //         <Navbar {...navHandlers} />
+  //         <WorkPage />
+  //         <Footer />
+  //         <AdminButton onClick={() => navigate('admin')} />
+  //       </div>
+  //     </>
+  //   );
+  // }
 
-  if (route === 'about') {
-    return (
-      <>
-        {loader}
-        <div className="relative min-h-screen bg-ink-950">
-          <Navbar {...navHandlers} />
-          <AboutPage onNavigateHome={() => navigate('home')} />
-          <Footer />
-          <AdminButton onClick={() => navigate('admin')} />
-        </div>
-      </>
-    );
-  }
+  // if (route === 'about') {
+  //   return (
+  //     <>
+  //       {loader}
+  //       <div className="relative min-h-screen bg-ink-950">
+  //         <Navbar {...navHandlers} />
+  //         <AboutPage onNavigateHome={() => navigate('home')} />
+  //         <Footer />
+  //         <AdminButton onClick={() => navigate('admin')} />
+  //       </div>
+  //     </>
+  //   );
+  // }
 
-  if (route === 'services') {
-    return (
-      <>
-        {loader}
-        <div className="relative min-h-screen bg-ink-950">
-          <Navbar {...navHandlers} />
-          <ServicesPage onNavigateHome={() => navigate('home')} />
-          <Footer />
-          <AdminButton onClick={() => navigate('admin')} />
-        </div>
-      </>
-    );
-  }
+  // if (route === 'services') {
+  //   return (
+  //     <>
+  //       {loader}
+  //       <div className="relative min-h-screen bg-ink-950">
+  //         <Navbar {...navHandlers} />
+  //         <ServicesPage onNavigateHome={() => navigate('home')} />
+  //         <Footer />
+  //         <AdminButton onClick={() => navigate('admin')} />
+  //       </div>
+  //     </>
+  //   );
+  // }
 
-  if (route === 'contact') {
-    return (
-      <>
-        {loader}
-        <div className="relative min-h-screen bg-ink-950">
-          <Navbar {...navHandlers} />
-          <ContactPage onNavigateHome={() => navigate('home')} />
-          <Footer />
-          <AdminButton onClick={() => navigate('admin')} />
-        </div>
-      </>
-    );
-  }
+  // if (route === 'contact') {
+  //   return (
+  //     <>
+  //       {loader}
+  //       <div className="relative min-h-screen bg-ink-950">
+  //         <Navbar {...navHandlers} />
+  //         <ContactPage onNavigateHome={() => navigate('home')} />
+  //         <Footer />
+  //         <AdminButton onClick={() => navigate('admin')} />
+  //       </div>
+  //     </>
+  //   );
+  // }
 
   // ── Home ─────────────────────────────────────────────────────
   return (

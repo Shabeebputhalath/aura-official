@@ -1,25 +1,24 @@
 import { useState, type ReactNode } from 'react';
 import {
-  LayoutDashboard, Film, Layers, DollarSign, Mail, Quote,
+  LayoutDashboard, Layers, DollarSign, Mail, Quote,
   FileText, Settings, Search, Bell, Menu, X, ArrowLeft, LogOut,
   Sparkles, Sun, Moon,
 } from 'lucide-react';
 import { useAdminTheme } from '@/components/admin/AdminTheme';
 
 export type AdminPage =
-  | 'dashboard' | 'projects' | 'services' | 'pricing'
+  | 'dashboard' | 'services' | 'pricing'
   | 'inquiries' | 'testimonials' | 'capabilities' | 'content' | 'settings';
 
 interface NavItem { id: AdminPage; label: string; icon: typeof LayoutDashboard; }
 
 const navItems: NavItem[] = [
   { id: 'dashboard',    label: 'Dashboard',    icon: LayoutDashboard },
-  { id: 'projects',     label: 'Projects',     icon: Film },
+  { id: 'capabilities', label: 'Projects',     icon: Sparkles },
   { id: 'services',     label: 'Services',     icon: Layers },
   { id: 'pricing',      label: 'Pricing',      icon: DollarSign },
   { id: 'inquiries',    label: 'Inquiries',    icon: Mail },
   { id: 'testimonials', label: 'Testimonials', icon: Quote },
-  { id: 'capabilities', label: 'Capabilities', icon: Sparkles },
   { id: 'content',      label: 'Content',      icon: FileText },
   { id: 'settings',     label: 'Settings',     icon: Settings },
 ];
