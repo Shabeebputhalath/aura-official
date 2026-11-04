@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react';
 import { useReveal } from '@/hooks/useReveal';
 
+/* ── Reel data ───────────────────────────────────────────────────────────────
+   Set href to a real URL (Instagram, YouTube, etc.) when ready.
+   Leave as '#' to keep play-on-click behaviour.                             */
 type LocalReel = { id: string; label: string; video_url: string; href: string };
 
 const LOCAL_REELS: LocalReel[] = [
@@ -14,26 +17,7 @@ const LOCAL_REELS: LocalReel[] = [
   { id: 'v8', label: 'Watch',     video_url: '/videos/watch.mp4',   href: '#' },
 ];
 
-/*
-  Height pattern (matching the reference — middle cards tallest):
-  index:   0      1      2      3      4      5      6      7
-  scale:  0.82   0.92   1.00   0.96   0.92   1.00   0.90   0.84
-  rotate: -3°   -1.5°   0°     1°    -1°     0°     1.5°   3°
-*/
-const CARD_META = [
-  { scale: 0.82, rotate: -3   },
-  { scale: 0.92, rotate: -1.5 },
-  { scale: 1.00, rotate:  0   },
-  { scale: 0.96, rotate:  1   },
-  { scale: 0.92, rotate: -1   },
-  { scale: 1.00, rotate:  0   },
-  { scale: 0.90, rotate:  1.5 },
-  { scale: 0.84, rotate:  3   },
-];
-
-/* Base card height in px — reference-style portrait */
-const BASE_H = 480;
-
+/* ── Section ─────────────────────────────────────────────────────────────── */
 export default function Capabilities() {
   const { ref, visible } = useReveal();
 
@@ -41,28 +25,35 @@ export default function Capabilities() {
     <section
       id="works"
       style={{
-        background:  '#000000',
-        padding:     'clamp(3rem,6vw,5rem) 0 clamp(3rem,6vw,5rem)',
-        position:    'relative',
-        overflow:    'hidden',
+        background: '#020202',
+        padding: 'clamp(3rem,6vw,5rem) 0 0',
+        position: 'relative',
+        overflow: 'hidden',
       }}
     >
-      {/* ── Header ── */}
+      {/* Ambient glow */}
+      {/* <div
+        aria-hidden="true"
+        style={{
+          position: 'absolute', inset: 0, pointerEvents: 'none',
+          background: 'radial-gradient(ellipse 80% 50% at 50% 0%, rgba(124,92,255,0.1) 0%, transparent 70%)',
+        }}
+      /> */}
+
+      {/* Header — padded for readability */}
       <div
         ref={ref}
         style={{
-          padding:      '0 clamp(1.25rem,4vw,3rem)',
-          marginBottom: 'clamp(2rem,4vw,3.5rem)',
-          position:     'relative',
-          zIndex:       1,
+          position: 'relative', zIndex: 1,
+          padding: '0 clamp(1.25rem,4vw,2.5rem)',
+          marginBottom: 'clamp(2rem,4vw,3rem)',
         }}
       >
         <p className={`reveal section-label transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}>
           Selected Work
         </p>
 
-        <div style={{ display:'flex', flexWrap:'wrap', alignItems:'flex-end',
-          justifyContent:'space-between', gap:'1rem', marginTop:'1rem' }}>
+        <div style={{ display:'flex', flexWrap:'wrap', alignItems:'flex-end', justifyContent:'space-between', gap:'1rem', marginTop:'1rem' }}>
           <h2
             className={`reveal font-display font-bold leading-[1.07] tracking-tight text-white transition-all duration-700 ${visible ? 'reveal-visible' : ''}`}
             style={{ fontSize:'clamp(2rem,4.5vw,3.75rem)', margin:0, transitionDelay:'80ms' }}
@@ -72,211 +63,131 @@ export default function Capabilities() {
             {' '}frames
           </h2>
 
-          <p style={{ fontSize:'14px', color:'rgba(255,255,255,0.45)',
-            maxWidth:'38ch', lineHeight:1.65, margin:0 }}>
-            AI-crafted reels for Instagram, TikTok and Shorts —
-            cinematic from the very first second.
+          <p style={{ fontSize:'14px', color:'rgba(255,255,255,0.45)', maxWidth:'36ch', lineHeight:1.65, margin:0 }}>
+            AI-crafted reels built for Instagram, TikTok and Shorts — cinematic from the very first second.
           </p>
         </div>
       </div>
 
-      {/* ── Horizontal card strip ── */}
-      <style>{`
-        @keyframes reel-scroll {
-          0%   { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
-        .reel-strip {
-          display: flex;
-          align-items: flex-end;
-          gap: clamp(6px, 1vw, 12px);
-          padding: 2rem clamp(1.25rem,4vw,3rem) 2.5rem;
-          overflow: visible;
-          width: max-content;
-          animation: reel-scroll 28s linear infinite;
-          will-change: transform;
-        }
-        .reel-strip-outer {
-          overflow: hidden;
-        }
-        .reel-strip-outer:hover .reel-strip {
-          animation-play-state: paused;
-        }
+     {/* ── 4-column grid with side margins ── */}
+<div
+  className="reel-grid"
+  style={{
+    position: 'relative',
+    zIndex: 1,
+    display: 'grid',
+    gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+    gap: '2px',
+    width: '90%',
+    margin: '0 auto',
+    padding: '4',
+    alignItems: 'start',
+  }}
+>
+        <style>{`
+          @media(max-width:900px){ .reel-grid{ grid-template-columns:repeat(2,minmax(0,1fr))!important } }
+          .reel-card:hover { transform:translateY(-6px)!important; border-color:rgba(124,92,255,0.45)!important; box-shadow:0 20px 60px rgba(124,92,255,0.2)!important; }
+        `}</style>
 
-        .rc-wrap {
-          flex-shrink: 0;
-          transition: transform 0.4s cubic-bezier(.22,1,.36,1);
-          transform-origin: bottom center;
-        }
-        .rc-wrap:hover {
-          transform: scale(1.04) translateY(-8px) rotate(0deg) !important;
-          z-index: 10;
-        }
-
-        .rc-card {
-          position: relative;
-          width: clamp(120px, 14vw, 190px);
-          border-radius: 1.25rem;
-          overflow: hidden;
-          cursor: pointer;
-          background: #111;
-          display: block;
-          text-decoration: none;
-          box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-          transition: box-shadow 0.4s ease;
-        }
-        .rc-card:hover {
-          box-shadow: 0 20px 60px rgba(0,0,0,0.65);
-        }
-
-        .rc-card video {
-          display: block;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-
-        .rc-play {
-          position: absolute;
-          inset: 0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          background: rgba(0,0,0,0.18);
-          transition: opacity 0.3s;
-          pointer-events: none;
-        }
-        .rc-card:hover .rc-play { opacity: 0; }
-
-        .rc-label {
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          right: 0;
-          padding: 2rem 0.875rem 0.875rem;
-          background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.72));
-          pointer-events: none;
-        }
-
-        @media(max-width:640px) {
-          .rc-card { width: clamp(100px, 36vw, 150px) !important; }
-        }
-      `}</style>
-
-      {/* Outer overflow-hidden wrapper — strip scrolls inside */}
-      <div className="reel-strip-outer">
-        {/* Doubled list for seamless loop */}
-        <div className="reel-strip">
-          {[...LOCAL_REELS, ...LOCAL_REELS].map((reel, i) => {
-            const meta   = CARD_META[i % CARD_META.length] ?? { scale: 1, rotate: 0 };
-            const height = Math.round(BASE_H * meta.scale);
-            return (
-              <div
-                key={`${reel.id}-${i}`}
-                className="rc-wrap"
-                style={{ transform: `rotate(${meta.rotate}deg)` }}
-              >
-                <ReelCard reel={reel} height={height} />
-              </div>
-            );
-          })}
-        </div>
+        {LOCAL_REELS.map((reel, i) => (
+          <ReelCard key={reel.id} reel={reel} index={i} />
+        ))}
       </div>
     </section>
   );
 }
 
-/* ── Individual card ─────────────────────────────────────────────────────── */
-function ReelCard({ reel, height }: { reel: LocalReel; height: number }) {
-  const videoRef   = useRef<HTMLVideoElement>(null);
-  const [playing, setPlaying] = useState(false);
-  const [failed,  setFailed]  = useState(false);
+/* ── Reel card ────────────────────────────────────────────────────────────── */
+function ReelCard({ reel, index }: { reel: LocalReel; index: number }) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying]  = useState(false);
+  const [failed,  setFailed]   = useState(false);
+
   const isExternal = reel.href.startsWith('http');
+  const offsetStyle = index % 2 === 1 ? { marginTop: 'clamp(1.5rem,3vw,3rem)' } : {};
 
   const play  = () => { videoRef.current?.play().catch(() => {}); setPlaying(true); };
-  const pause = () => {
-    if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0; }
-    setPlaying(false);
+  const pause = () => { if (videoRef.current) { videoRef.current.pause(); videoRef.current.currentTime = 0; } setPlaying(false); };
+
+  const cardStyle: React.CSSProperties = {
+    display: 'block',
+    textDecoration: 'none',
+    position: 'relative',
+    aspectRatio: '9/16',
+    cursor: 'pointer',
+    overflow: 'hidden',
+    border: '1px solid rgba(255,255,255,0.06)',
+    background: '#0a0a0f',
+    transition: 'transform 0.45s ease, border-color 0.3s, box-shadow 0.3s',
+    ...offsetStyle,
   };
 
   const inner = (
     <>
-      {/* Video */}
-      {!failed ? (
-        <video
-          ref={videoRef}
-          src={reel.video_url}
-          muted
-          loop
-          playsInline
-          preload="metadata"
-          onPlay={() => setPlaying(true)}
-          onPause={() => setPlaying(false)}
-          onError={() => setFailed(true)}
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }}
-        />
-      ) : (
-        <div style={{ width:'100%', height:'100%', display:'flex', alignItems:'center',
-          justifyContent:'center', background:'#1a1a1a', color:'rgba(255,255,255,0.4)',
-          fontSize:'11px', textAlign:'center', padding:'1rem' }}>
-          Video unavailable
+      <video
+        ref={videoRef}
+        src={reel.video_url}
+        muted loop playsInline preload="metadata"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onError={() => setFailed(true)}
+        style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', display:'block' }}
+      />
+
+      {failed && (
+        <div style={{ position:'absolute', inset:0, display:'flex', alignItems:'center', justifyContent:'center', background:'#17131f', color:'#fff', fontSize:'0.8rem', padding:'1rem', textAlign:'center' }}>
+          Could not load video
         </div>
       )}
 
-      {/* Play button — fades on hover via CSS */}
-      {!playing && !failed && (
-        <div className="rc-play">
-          <div style={{
-            width:44, height:44, borderRadius:'50%',
-            background:'rgba(255,255,255,0.2)',
-            backdropFilter:'blur(6px)',
-            display:'flex', alignItems:'center', justifyContent:'center',
-            border:'1px solid rgba(255,255,255,0.35)',
-          }}>
-            <svg viewBox="0 0 24 24" width="18" height="18" style={{ marginLeft:2 }}>
-              <path d="M8 5v14l11-7z" fill="white"/>
-            </svg>
-          </div>
-        </div>
-      )}
+      {/* Gradient */}
+      <div aria-hidden="true" style={{ position:'absolute', inset:0, pointerEvents:'none',
+        background:'linear-gradient(to bottom,rgba(0,0,0,0.35) 0%,transparent 35%,transparent 55%,rgba(0,0,0,0.82) 100%)' }} />
 
-      {/* Label at bottom */}
-      <div className="rc-label">
-        <span style={{
-          fontFamily:    '"Figtree",sans-serif',
-          fontSize:      '12px',
-          fontWeight:    600,
-          color:         '#ffffff',
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-        }}>
+      {/* Top: label + index */}
+      <div aria-hidden="true" style={{ position:'absolute', top:'1rem', left:'1rem', right:'1rem', display:'flex', alignItems:'center', justifyContent:'space-between', pointerEvents:'none' }}>
+        <span style={{ background:'rgba(0,0,0,0.55)', backdropFilter:'blur(8px)', WebkitBackdropFilter:'blur(8px)', border:'1px solid rgba(255,255,255,0.12)', borderRadius:'9999px', padding:'4px 12px', fontSize:'10px', fontWeight:600, letterSpacing:'0.08em', textTransform:'uppercase', color:'rgba(255,255,255,0.85)', whiteSpace:'nowrap' }}>
           {reel.label}
         </span>
+        <span style={{ fontFamily:"'Figtree',sans-serif", fontStyle:'italic', fontSize:'1.1rem', fontWeight:600, color:'rgba(160,140,255,0.95)' }}>
+          {String(index + 1).padStart(2, '0')}
+        </span>
+      </div>
+
+      {/* Play icon */}
+      {!playing && !failed && (
+        <span aria-hidden="true" style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:56, height:56, borderRadius:'50%', background:'rgba(124,92,255,0.35)', border:'1px solid rgba(124,92,255,0.6)', backdropFilter:'blur(8px)', display:'flex', alignItems:'center', justifyContent:'center', pointerEvents:'none' }}>
+          <svg viewBox="0 0 24 24" width="22" height="22" style={{ marginLeft:3 }}>
+            <path d="M8 5v14l11-7z" fill="white" />
+          </svg>
+        </span>
+      )}
+
+      {/* Bottom title */}
+      <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'1.25rem 1rem', pointerEvents:'none' }}>
+        <h3 style={{ fontFamily:"'Figtree',sans-serif", fontWeight:700, fontSize:'clamp(0.85rem,1.5vw,1.1rem)', color:'#ffffff', margin:0, lineHeight:1.2 }}>
+          {reel.label}
+        </h3>
       </div>
     </>
   );
 
-  const cardProps = {
-    className: 'rc-card',
-    style:     { height } as React.CSSProperties,
-    onMouseEnter: play,
-    onMouseLeave: pause,
-  };
-
+  /* External href → real link that opens in new tab */
   if (isExternal) {
     return (
-      <a href={reel.href} target="_blank" rel="noopener noreferrer" {...cardProps}>
+      <a href={reel.href} target="_blank" rel="noopener noreferrer"
+        className="reel-card" style={cardStyle}
+        onMouseEnter={play} onMouseLeave={pause}>
         {inner}
       </a>
     );
   }
 
+  /* '#' href → play/pause on hover & click, no navigation */
   return (
-    <a
-      href={reel.href}
+    <a href={reel.href} className="reel-card" style={cardStyle}
       onClick={e => { e.preventDefault(); playing ? pause() : play(); }}
-      {...cardProps}
-    >
+      onMouseEnter={play} onMouseLeave={pause}>
       {inner}
     </a>
   );
