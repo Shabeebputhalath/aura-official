@@ -114,7 +114,7 @@ export function DashboardPage({ onNavigate }: { onNavigate: (page: AdminPage) =>
         {/* Recent Projects */}
         <Card>
           <CardHeader title="Recent Projects" action={
-            <button onClick={() => onNavigate('projects')} className="text-xs font-medium text-accent-400 hover:text-accent-300">View all →</button>
+            <button onClick={() => onNavigate('capabilities')} className="text-xs font-medium text-accent-400 hover:text-accent-300">View all →</button>
           } />
           <CardBody className="space-y-3">
             {recentProjects.length === 0 ? (
